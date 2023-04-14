@@ -8,7 +8,7 @@
 * Related Document: See README.md
 *
 *******************************************************************************
-* Copyright 2021-2022, Cypress Semiconductor Corporation (an Infineon company) or
+* Copyright 2021-2023, Cypress Semiconductor Corporation (an Infineon company) or
 * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
 *
 * This software, including source code, documentation and related
@@ -64,6 +64,15 @@
 #define CY_ASSERT_FAILED                 (0u)
 #define SENSOR_ACTIVE                    (1u)
 
+/* setting recommended CDAC Dither scale value. Default is '0u' */
+#define CDAC_DITHER_SCALE                (0u)
+
+/* setting recommended CDAC Dither seed value. Default is '255u' */
+#define CDAC_DITHER_SEED                 (31u)
+
+/* setting recommended CDAC Dither poly value. Default is '142u' */
+#define CDAC_DITHER_POLY                 (18u)
+
 #if !SWD_DEBUG_ENABLE
 /* EZI2C interrupt priority must be higher than CAPSENSE interrupt. */
 #define EZI2C_INTR_PRIORITY              (2u)
@@ -81,6 +90,7 @@ stc_serial_led_context_t led_context;
 * Function Prototypes
 *******************************************************************************/
 static void initialize_capsense(void);
+static void set_Dither_parameters(void);
 static void capsense_msc0_isr(void);
 #if !SWD_DEBUG_ENABLE
 static void ezi2c_isr(void);
@@ -183,6 +193,11 @@ static void initialize_capsense(void)
         Cy_SysInt_Init(&capsense_msc0_interrupt_config, capsense_msc0_isr);
         NVIC_ClearPendingIRQ(capsense_msc0_interrupt_config.intrSrc);
         NVIC_EnableIRQ(capsense_msc0_interrupt_config.intrSrc);
+        
+        /* setting Dither parameter
+         * Must be called after Cy_CapSense_Init() and before Cy_CapSense_Enable()
+         */
+        set_Dither_parameters();
 
         /* Initialize the CAPSENSE firmware modules. */
         status = Cy_CapSense_Enable(&cy_capsense_context);
@@ -319,6 +334,42 @@ void led_control()
     serial_led_control(&led_context);
 
 }
+/*******************************************************************************
+* Function Name: set_Dither_parameters
+********************************************************************************
+* Summary:
+*  This functions sets the below CDAC Dither parameters to achive better performance
+*  1. CDAC_Dither_Scale
+*       - Default value is '0'
+*       - Recommended value defined in macro 'CDAC_DITHER_SCALE'
+*  2. CDAC_Dither_poly
+*       - Default value is '142'
+*       - Recommended value defined in macro 'CDAC_DITHER_POLY'
+*  3. CDAC_Dither_Seed
+*       - Default value is '255'
+*       - Recommended value defined in macro 'CDAC_DITHER_SEED'
+*
+*  Note : Must be called after Cy_CapSense_Init() and before Cy_CapSense_Enable
+*
+*  Refer CE Readme for more details
+*  Parameters:  void
+*  Return:  void
+*******************************************************************************/
+static void set_Dither_parameters(void)
+{
+    uint32_t wdIndex;
+
+    /* set Dither scale for each widgets*/
+    for (wdIndex = 0u; wdIndex < CY_CAPSENSE_TOTAL_WIDGET_COUNT; wdIndex++)
+    {
+        cy_capsense_context.ptrWdContext[wdIndex].cdacDitherValue = CDAC_DITHER_SCALE;
+    }
+
+    /* set Dither poly for all widgets*/
+    cy_capsense_context.ptrInternalContext->cdacDitherPoly = CDAC_DITHER_POLY;
+
+    /* set Dither seed for all widgets*/
+    cy_capsense_context.ptrInternalContext->cdacDitherSeed = CDAC_DITHER_SEED;
+}
 
 /* [] END OF FILE */
-
