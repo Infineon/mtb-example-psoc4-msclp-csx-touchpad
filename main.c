@@ -68,10 +68,10 @@
 #define CDAC_DITHER_SCALE                (0u)
 
 /* setting recommended CDAC Dither seed value. Default is '255u' */
-#define CDAC_DITHER_SEED                 (31u)
+#define CDAC_DITHER_SEED                 (127u)
 
 /* setting recommended CDAC Dither poly value. Default is '142u' */
-#define CDAC_DITHER_POLY                 (18u)
+#define CDAC_DITHER_POLY                 (65u)
 
 #if !SWD_DEBUG_ENABLE
 /* EZI2C interrupt priority must be higher than CAPSENSE interrupt. */

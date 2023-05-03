@@ -6,7 +6,7 @@ In addition, this code example also explains how to manually tune the mutual-cap
 
 [View this README on GitHub.](https://github.com/Infineon/mtb-example-psoc4-msclp-mutual-capacitance-touchpad)
 
-[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzUzMzkiLCJTcGVjIE51bWJlciI6IjAwMi0zNTMzOSIsIkRvYyBUaXRsZSI6IlBTb0MmdHJhZGU7IDQ6IE1TQ0xQIG11bHRpLXRvdWNoIG11dHVhbC1jYXBhY2l0YW5jZSB0b3VjaHBhZCB0dW5pbmciLCJyaWQiOiJ3YWluZ2Fua2FyIiwiRG9jIHZlcnNpb24iOiIxLjEuMCIsIkRvYyBMYW5ndWFnZSI6IkVuZ2xpc2giLCJEb2MgRGl2aXNpb24iOiJNQ0QiLCJEb2MgQlUiOiJJQ1ciLCJEb2MgRmFtaWx5IjoiUFNPQyJ9)
+[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzUzMzkiLCJTcGVjIE51bWJlciI6IjAwMi0zNTMzOSIsIkRvYyBUaXRsZSI6IlBTb0MmdHJhZGU7IDQ6IE1TQ0xQIG11bHRpLXRvdWNoIG11dHVhbC1jYXBhY2l0YW5jZSB0b3VjaHBhZCB0dW5pbmciLCJyaWQiOiJ3YWluZ2Fua2FyIiwiRG9jIHZlcnNpb24iOiIxLjIuMCIsIkRvYyBMYW5ndWFnZSI6IkVuZ2xpc2giLCJEb2MgRGl2aXNpb24iOiJNQ0QiLCJEb2MgQlUiOiJJQ1ciLCJEb2MgRmFtaWx5IjoiUFNPQyJ9)
 
 
 ## Requirements
@@ -294,7 +294,7 @@ Do the following to tune the touchpad widget:
 
    You can launch the device configurator in Eclipse IDE for ModusToolbox&trade; from the **Tools** section in the IDE Quick panel or in standalone mode from *{ModusToolbox&trade; install directory}/ModusToolbox/tools_{version}/device-configurator/device-configurator*. In this case, after opening the application, select **File** > **Open** and open the *design.modus* file of the respective application, which is present in the *{Application root directory}/bsps/TARGET_APP_\<BSP-NAME>/config/* folder.
 
-3. In the PSoC&trade; 4000T kit, the button pin is connected to CAPSENSE&trade; channel (MSCLP 0). Therefore, make sure to enable CAPSENSE&trade; channel in the device configurator as shown in **Figure 11**.
+3. In the PSoC&trade; 4000T kit, the touchpad pins are connected to CAPSENSE&trade; channel (MSCLP 0). Therefore, make sure to enable CAPSENSE&trade; channel in the device configurator as shown in **Figure 9**.
 
    **Figure 9. Enable MSCLP channel in device configurator**
 
@@ -356,7 +356,7 @@ Do the following to tune the touchpad widget:
 
    - **Maximum X-Axis position** and **Maximum Y-Axis position** to 255.
 
-   - **Tx clock divider:** Retain default value (will be set in **Stage 3**)
+   - **Tx clock divider:** Retain default value (will be set in **Stage 2**)
 
    - **Clock source:** **Direct**
 
@@ -364,7 +364,7 @@ Do the following to tune the touchpad widget:
 
    - **Number of sub-conversions:** 25
 
-     100 is a good starting point to ensure a fast scan time and sufficient signal. This value will be adjusted as required in **Stage 5**. 
+     25 is a good starting point to ensure a fast scan time and sufficient signal. This value will be adjusted as required in **Stage 4**. 
 
    - **Finger Threshold:** 20
 
@@ -378,7 +378,7 @@ Do the following to tune the touchpad widget:
 
    - **ON debounce:** 3
 
-      These values reduces the influence of baseline on the sensor signal, which helps to get the true difference-count. Retain the default values for the widget threshold parameters; these parameters are set in **Stage 5**.
+      These values reduces the influence of baseline on the sensor signal, which helps to get the true difference-count. Retain the default values for the widget threshold parameters; these parameters are set in **Stage 6**.
 
    **Figure 13. CAPSENSE&trade; configurator - Widget details settings**
 
@@ -406,7 +406,7 @@ Do the following to tune the touchpad widget:
 -------------------
 The maximum frequency set should charge and discharge the sensor completely, which is verified using an oscilloscope and an active probe. To view the charging and discharging waveforms of the sensor, probe at the sensors (or as close as possible to the sensors), and not at the pins or resistor. Refer **Figure 15** and **Figure 16** for more deatils. You can also use a passive probe which will add an additional parasitic capacitance of around 15 pF, therefore the tuning may be not optimal. These figures show the signals observed on shield.
 
-**Figure 15**  shows proper charging when sense clock frequency is correctly tuned i.e., the voltage is settling to the required voltage at the end of each phase.**Figure 16** shows incomplete settling (charging/discharing) and hence the sense clock divider is set to 28 as shown in **Figure 15**.
+**Figure 15**  shows proper charging when sense clock frequency is correctly tuned i.e., the voltage is settling to the required voltage at the end of each phase.**Figure 16** shows incomplete settling (charging/discharing) and hence the sense clock divider is set to 18 as shown in **Figure 15**.
 
  **Notes:** 
    - If you are explicitly using the PRS or SSCx clock source to lower electromagnetic interference, ensure that you select the sense clock frequency that meets the conditions mentioned in the [ModusToolbox&trade; CAPSENSE&trade; configurator guide](https://www.infineon.com/dgdl/Infineon-ModusToolbox_CapSense_Configurator_Guide_(Version_2.0)-Software-v01_00-EN.pdf?fileId=8ac78c8c7e7124d1017ed9999c3b364d&utm_source=cypress&utm_medium=referral&utm_campaign=202110_globe_en_all_integration-files) in addition to the above conditions. PRS and SSCx techniques spread the frequency across a range.
@@ -428,12 +428,12 @@ For tuning your board, ensure to charge/discharge by probing at the sensor.
 
    <img src="images/csdrm-waveform_improper.png" alt="" width="400"/>
    
-Observe Point A and B marked in **Figure 15**, it is charging/discharging properly to VDD/2 whereas in **Figure 16**, it is not reaching to VDD/2.
+Observe Point A and B marked in **Figure 15**, it is charging/discharging properly to 0 V whereas in **Figure 16**, it is not reaching to 0 V.
   
 
    Set the final value in the CAPSENSE&trade; configurator using the steps given in **Step 8** of **Stage 1**, which ensures the maximum possible sense clock frequency (for good gain) while allowing the sensor capacitance to fully charge and discharge in each phase of the MSCLP CSD sensing method.
 
-   As per the oscilloscope measurements, at **16 sense clock frequency** sensor is getting charge and discharge completely.
+   As per the oscilloscope measurements, at **18 sense clock frequency** sensor is getting charge and discharge completely.
 <br>
 
 ### Stage 3: Obtain crossover point and noise
@@ -448,7 +448,7 @@ Observe Point A and B marked in **Figure 15**, it is charging/discharging proper
 
    **Note:** Calibration may fail if the obtained raw counts is not within the targeted range. 
 
-   - As discussed in **Step 2** of **Stage 3**, the Tx clock divider will be tuned to bring the CDAC values to the recommended range in this step.
+   - As discussed in **Stage 2**, the Tx clock divider will be tuned to bring the CDAC values to the recommended range in this step.
 
    - Click **Touchpad** in the **Widget Explorer** to view the reference CDAC value in the sensor parameters window as shown in **Figure 17**.
 
@@ -482,7 +482,7 @@ Observe Point A and B marked in **Figure 15**, it is charging/discharging proper
 
    6. Repeat steps 1 to 6 until you obtain Reference CDAC values in the range (10/Compensation CDAC Divider) to 255 and Compensation CDAC values are in the range 1 to 255.
 
-      **Note:** As **Figure 17** shows, CDAC values are already in the recommended range. Therefore, you can leave the Tx clock divider to the value as shown in **Step 2** of **Stage 3**.
+      **Note:** As **Figure 17** shows, CDAC values are already in the recommended range. Therefore, you can leave the Tx clock divider to the value as shown in **Stage 2**.
 
 5. Capture the raw counts of each sensor element in the touchpad (as shown in **Figure 19**) and verify that they are approximately (+/- 5%) equal to 40% of the MaxCount. See [AN234231 - Achieving lowest-power capacitive sensing with PSoC&trade; 4000T](https://www.infineon.com/AN234231) for the MaxCount equation.
 
@@ -524,7 +524,7 @@ Observe Point A and B marked in **Figure 15**, it is charging/discharging proper
 
       |Kit | Max peak-to-peak noise|
       |:----------|:-------------------------|
-      |CY8CKIT-040T   |86|
+      |CY8CKIT-040T   |132|
 
 7. A finger (6 mm) should be held on the touchpad in the least touch intensity (LTI) position (at the intersection of four nodes) as shown in the following figure.
 
@@ -550,7 +550,7 @@ Observe Point A and B marked in **Figure 15**, it is charging/discharging proper
 
       <img src="images/touchpad-view-lti.png" alt="" />
 
-      LTI Signal = (415 + 471 + 411 + 481)/4 = 445
+      LTI Signal = (1112 + 1151 + 1056 + 1139)/4 = 1115
 
 <br>
 
@@ -579,7 +579,7 @@ The CAPSENSE&trade; system may be required to work reliably in adverse condition
 
    Here, from **Figure 20** and **Figure 22**,
 
-   SNR = 445/86 = **5.2**
+   SNR = 1115/132 = **8.45**
 
    **Note:** Ensure that the **Number of sub-conversions** (Nsub) does not exceed the max limit and saturate the raw count.
 
@@ -591,7 +591,7 @@ The CAPSENSE&trade; system may be required to work reliably in adverse condition
 
    - Current consumption is directly proportional to number of sub-conversion, therefore decrease the number of sub-conversions to achieve lower current consumption.
 
-      **Note:** Number of sub-conversion should be greater than or equal to 4.
+      **Note:** Number of sub-conversion should be greater than or equal to 8.
 
    - Calculate decimation rate using **Equation 2**. Resolution increases with increase in decimation rate, therefore set the maximum decimation rate.
 
@@ -617,9 +617,9 @@ The CAPSENSE&trade; system may be required to work reliably in adverse condition
 ```
    #define	CDAC_DITHER_SCALE          0u
 
-   #define	CDAC_DITHER_SEED           31u
+   #define	CDAC_DITHER_SEED           127u
 
-   #define	CDAC_DITHER_POLY           18u
+   #define	CDAC_DITHER_POLY           65u
 ```
 
   **Table 2** shows the general recommended values of dither parameters based on N<sub>sub</sub> selection.
@@ -648,7 +648,7 @@ After confirming that your design meets the timing parameters and power requirem
 
 **Note:** Thresholds are set based on the LTI position, because it is the least valid touch signal that can be obtained.
 
-Set the recommended threshold values for the Touchpad widget using the LTI signal value obtained in **Stage 5**:
+Set the recommended threshold values for the Touchpad widget using the LTI signal value obtained in **Stage 4**:
 
    - **Finger Threshold:** 80% of the LTI signal
 
@@ -670,7 +670,7 @@ Set the recommended threshold values for the Touchpad widget using the LTI signa
 
          <img src="images/touchpad-view-hys.png" alt="" width="1000" />
 
-      4. Hysteresis = Max_Min_count/2 = 730/2 = 365
+      4. Hysteresis = Max_Min_count/2 = 200/2 = 100
 
    - **ON Debounce:** Default value of 3 (Set to 1 for gesture detection)
 
@@ -684,10 +684,10 @@ Set the recommended threshold values for the Touchpad widget using the LTI signa
 
    |Parameter|	CY8CKIT-040T |
    |:--------|:------|
-   |Number of Sub-conversions	| 25 |
-   |Finger threshold 	| 625 |
-   |Noise threshold | 312 |
-   |Negative noise threshold	| 312 |
+   |Number of Sub-conversions	| 100 |
+   |Finger threshold 	| 892 |
+   |Noise threshold | 446 |
+   |Negative noise threshold	| 446 |
    |Low baseline reset	| 30 |
    |Hysteresis	| 100 |
    |ON debounce	| 3 |
@@ -798,7 +798,11 @@ Document title: *CE235339* - *PSoC&trade; 4: MSCLP multi-touch mutual-capacitanc
  1.0.0   | New code example. <br /> This version is not backward compatible with ModusToolbox&trade; software v2.4.
  1.0.1   | Project dependency update. 
  1.1.0   | Minor folder structure changes that doesn't break backward compatibility.
+ 1.2.0   | Minor README and configuration update.
 
+
+
+ 
 
 ---------------------------------------------------------
 
