@@ -1,4 +1,4 @@
-# PSoC&trade; 4: MSCLP multi-touch mutual-capacitance touchpad tuning
+# PSoC&trade; 4: MSCLP multitouch mutual-capacitance touchpad tuning
 
 This code example demonstrates how to use the CAPSENSE&trade; middleware to detect two finger touch positions on a mutual-capacitance-based touchpad widget in PSoC&trade; 4 devices with multi sense converter low power (MSCLP).
 
@@ -6,32 +6,34 @@ In addition, this code example also explains how to manually tune the mutual-cap
 
 [View this README on GitHub.](https://github.com/Infineon/mtb-example-psoc4-msclp-mutual-capacitance-touchpad)
 
-[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzUzMzkiLCJTcGVjIE51bWJlciI6IjAwMi0zNTMzOSIsIkRvYyBUaXRsZSI6IlBTb0MmdHJhZGU7IDQ6IE1TQ0xQIG11bHRpLXRvdWNoIG11dHVhbC1jYXBhY2l0YW5jZSB0b3VjaHBhZCB0dW5pbmciLCJyaWQiOiJ3YWluZ2Fua2FyIiwiRG9jIHZlcnNpb24iOiIxLjIuMCIsIkRvYyBMYW5ndWFnZSI6IkVuZ2xpc2giLCJEb2MgRGl2aXNpb24iOiJNQ0QiLCJEb2MgQlUiOiJJQ1ciLCJEb2MgRmFtaWx5IjoiUFNPQyJ9)
+[Provide feedback on this code example.](https://cypress.co1.qualtrics.com/jfe/form/SV_1NTns53sK2yiljn?Q_EED=eyJVbmlxdWUgRG9jIElkIjoiQ0UyMzUzMzkiLCJTcGVjIE51bWJlciI6IjAwMi0zNTMzOSIsIkRvYyBUaXRsZSI6IlBTb0MmdHJhZGU7IDQ6IE1TQ0xQIG11bHRpdG91Y2ggbXV0dWFsLWNhcGFjaXRhbmNlIHRvdWNocGFkIHR1bmluZyIsInJpZCI6IndhaW5nYW5rYXIiLCJEb2MgdmVyc2lvbiI6IjIuMC4wIiwiRG9jIExhbmd1YWdlIjoiRW5nbGlzaCIsIkRvYyBEaXZpc2lvbiI6Ik1DRCIsIkRvYyBCVSI6IklDVyIsIkRvYyBGYW1pbHkiOiJQU09DIn0=)
 
 
 ## Requirements
 
-- [ModusToolbox&trade; software](https://www.infineon.com/cms/en/design-support/tools/sdk/modustoolbox-software/) v3.0 or later
+- [ModusToolbox&trade; software](https://www.infineon.com/modustoolbox) v3.1 or later
 
-   **Note:** This code example version requires ModusToolbox&trade; software version 3.0 or later and is not backward compatible with v2.4 or older versions.
+   **Note:** This code example version requires ModusToolbox&trade; software version 3.1 or later, and is not backward compatible with v3.0 or older versions.
 
-- Board support package (BSP) minimum required version: 0.6.0
+- Board support package (BSP) minimum required version: 3.1.0
 - Programming language: C
-- Associated parts: PSoC&trade; 4000T datasheet
+- Associated parts: [PSoC&trade; 4000T](www.infineon.com/002-33949)
 
 ## Supported toolchains (make variable 'TOOLCHAIN')
 
-- GNU Arm&reg; embedded compiler v10.3.1 (`GCC_ARM`) - Default value of `TOOLCHAIN`
-- Arm&reg; compiler v6.16 (`ARM`)
-- IAR C/C++ compiler v9.30.1 (`IAR`)
+- GNU Arm&reg; Embedded Compiler v11.3.1 (`GCC_ARM`) - Default value of `TOOLCHAIN`
+- Arm&reg; Compiler v6.16 (`ARM`)
+- IAR C/C++ Compiler v9.30.1 (`IAR`)
 
 ## Supported kits (make variable 'TARGET')
 
-- PSoC&trade; 4000T CAPSENSE&trade; evaluation kit (`CY8CKIT-040T`) - Default value of `TARGET`
+- [PSoC&trade; 4000T CAPSENSE&trade; Evaluation Kit](https://www.infineon.com/CY8CKIT-040T) (`CY8CKIT-040T`) - Default `TARGET`
 
 ## Hardware setup
 
-This example uses the board's default configuration. See the Kit user guide to ensure that the board is configured correctly.
+This example uses the board's default configuration. See the [kit user guide](www.infineon.com/002-34472) to ensure that the board is configured correctly.
+
+**Note:** The PSoC&trade; 4 kits (except [CY8CKIT-040T](https://www.infineon.com/CY8CKIT-040T) and [CY8CKIT-041S-MAX](https://www.infineon.com/CY8CKIT-041s-max)) ship with KitProg2 installed. The ModusToolbox&trade; software requires KitProg3. Before using this code example, make sure that the board is upgraded to KitProg3. The tool and instructions are available in the [Firmware Loader](https://github.com/Infineon/Firmware-loader) GitHub repository. If you do not upgrade, you will see an error like "unable to find CMSIS-DAP device" or "KitProg firmware is out of date".
 
 ## Software setup
 
@@ -45,9 +47,9 @@ Create the project and open it using one of the following:
 
 1. Click the **New Application** link in the **Quick Panel** (or, use **File** > **New** > **ModusToolbox&trade; Application**). This launches the [Project Creator](https://www.infineon.com/ModusToolboxProjectCreator) tool.
 
-2. Pick a kit supported by the code example from the list shown in the **Project Creator - Choose Board Support Package (BSP)** dialog.
+2. Pick a kit supported by the code example from the list shown in the **Project Creator – Choose Board Support Package (BSP)** dialog.
 
-   When you select a supported kit, the example is reconfigured automatically to work with the kit. To work with a different supported kit later, use the [Library Manager](https://www.infineon.com/dgdl/Infineon-ModusToolbox_Library_Manager_2.0_User_Guide-UserManual-v01_00-EN.pdf?fileId=8ac78c8c8386267f0183a960c5945992) to choose the BSP for the supported kit. You can use the Library Manager to select or update the BSP and firmware libraries used in this application. To access the Library Manager, click the link from the **Quick Panel**.
+   When you select a supported kit, the example is reconfigured automatically to work with the kit. To work with a different supported kit later, use the [Library Manager](https://www.infineon.com/ModusToolboxLibraryManager) to choose the BSP for the supported kit. You can use the Library Manager to select or update the BSP and firmware libraries used in this application. To access the Library Manager, click the link from the **Quick Panel**.
 
    You can also just start the application creation process again and select a different kit.
 
@@ -57,7 +59,7 @@ Create the project and open it using one of the following:
 
 4. (Optional) Change the suggested **New Application Name**.
 
-5. The **Application(s) Root Path** defaults to the Eclipse workspace which is usually the desired location for the application. If you want to store the application in a different location, you can change the *Application(s) Root Path* value. Applications that share libraries should be in the same root path.
+5. The **Application(s) Root Path** defaults to the Eclipse workspace, which is usually the desired location for the application. If you want to store the application in a different location, you can change the *Application(s) Root Path* value. Applications that share libraries should be in the same root path.
 
 6. Click **Create** to complete the application creation process.
 
@@ -105,7 +107,7 @@ Argument | Description | Required/optional
 Following example adds the CY8CKIT-040T BSP to the already created application and makes it the active BSP for the app:
 
    ```
-   library-manager-cli --project "C:/mtb_projects/MSCLPMutualCapTouchpadTuning" --add-bsp-name CY8CKIT-040T --add-bsp-version "latest-v4.X" --add-bsp-location "local"
+   library-manager-cli --project "C:/mtb_projects/MSCLPMutualCapTouchpadTuning" --add-bsp-name CY8CKIT-040T --add-bsp-version "latest-v3.X" --add-bsp-location "local"
 
    library-manager-cli --project "C:/mtb_projects/MSCLPMutualCapTouchpadTuning" --set-active-bsp APP_CY8CKIT-040T
    ```
@@ -118,9 +120,12 @@ Use one of the following options:
 
 - **Use the standalone [Project Creator](https://www.infineon.com/ModusToolboxProjectCreator) tool:**
 
-   1. Launch Project Creator from the Windows start menu or from *{ModusToolbox&trade; software install directory}/tools_{version}/project-creator/project-creator.exe*.
-   2. In the initial **Choose Board Support Package** screen, select the BSP and click **Next**.
-   3. In the **Select Application** screen, select the specific IDE from the **Target IDE** drop-down menu.
+   1. Launch Project Creator from the Windows Start menu or from *{ModusToolbox&trade; software install directory}/tools_{version}/project-creator/project-creator.exe*.
+
+   2. In the initial **Choose Board Support Package** screen, select the BSP, and click **Next**.
+
+   3. In the **Select Application** screen, select the appropriate IDE from the **Target IDE** drop-down menu.
+
    4. Click **Create** and follow the instructions printed in the bottom pane to import or open the exported project in the respective IDE.
 
 <br>
@@ -141,23 +146,17 @@ The project already has the necessary settings by default, so you can go to [Ope
 
 ## Operation
 
-1. Connect the board to your PC using the provided micro USB cable through the KitProg3 USB connector as follows:
+1. Connect the board to your PC using the provided micro-B USB cable through the KitProg3 USB connector as follows:
 
-   **Figure 1. Connecting the CY8CKIT-040T kit to a computer**
+   **Figure 1. Connecting the [CY8CKIT-040T](https://www.infineon.com/CY8CKIT-040T) kit with the PC**
 
    <img src="images/kit_connection.png" alt="" width="400" />
 
-2. The SWD, I2C and user LED modes are multiplexed to the same pins (GPIO Pins P3[2] and P3[3]) in CY8CKIT-040T. The interface can be switched between these using the FW-loader commands. Download and unzip the *Batch_files_for_mux_selection* zipped file from the Beta package to the *bin* folder inside the *fw-loader* folder in the ModusToolbox&trade; installation directory. 
-    
-   Default location: */ModusToolbox/tools_3.0/fw-loader/bin*
-   
-   Select the SWD mode by running the `Select_SWD` batch file to program the CY8CKIT-040T kit. For detailed information, see **Section 2.3.1** in CY8CKIT-040T kit user guide.
-
-3. Program the board using one of the following:
+2. Program the board using one of the following:
 
    <details><summary><b>Using Eclipse IDE for ModusToolbox&trade; software</b></summary>
 
-      1. Select the application project in the Project Explorer.
+      1. Select the application Project in the Project Explorer.
 
       2. In the **Quick Panel**, scroll down, and click **\<Application Name> Program (KitProg3_MiniProg4)**.
    </details>
@@ -175,27 +174,25 @@ The project already has the necessary settings by default, so you can go to [Ope
       ```
    </details>
 
-4. After programming, the application starts automatically.
+3. After programming, the application starts automatically.
 
-5. To test the application, slide your finger over the CAPSENSE&trade; touchpad and notice that LED1 and LED3 turn ON with green color when touched and turn OFF when the finger is lifted.
+4. To test the application, slide your finger over the CAPSENSE&trade; touchpad and notice that LED1 and LED3 turn ON with green color when touched and turn OFF when the finger is lifted.
    - LED1 brightness increases when finger is moved from bottom to up, with bottom row having minimum and top row having maximum brightness.
    - LED3 brightness increases when finger is moved from left to right, with left column having minimum and right column having maximum brightness.
    
-6. You can also monitor the CAPSENSE&trade; data using the CAPSENSE&trade; tuner application as follows:
+5. You can also monitor the CAPSENSE&trade; data using the CAPSENSE&trade; tuner application as follows:
 
     **Monitor data using CAPSENSE&trade; tuner**
 
-    1. Select the I2C mode by running the `Select_I2C` batch file to enable the I2C communication between onboard KitProg and CAPSENSE&trade; tuner.
-    
-    2. Open CAPSENSE&trade; tuner from the tools section in the IDE Quick panel. 
-    
-        You can also run the CAPSENSE&trade; tuner application standalone from *{ModusToolbox&trade; install directory}/ModusToolbox/tools_{version}/capsense-configurator/capsense-tuner*. In this case, after opening the application, select **File** > **Open** and open the *design.cycapsense* file of the respective application, which is present in the *{Application root directory}/bsps/TARGET_APP_\<BSP-NAME>/config/* folder. 
+    1. Open CAPSENSE&trade; Tuner from the tools section in the IDE **Quick Panel**.
 
-	     See the [ModusToolbox&trade; user guide](https://www.infineon.com/ModusToolboxUserGuide) (locally available at *ModusToolbox&trade; install directory}/docs_{version}/mtb_user_guide.pdf*) for options to open the CAPSENSE&trade; tuner application using the CLI.
+        You can also run the CAPSENSE&trade; Tuner application in standalone mode from *{ModusToolbox&trade; install directory}/ModusToolbox/tools_{version}/capsense-configurator/capsense-tuner*. In this case, after opening the application, select **File** > **Open** and open the *design.cycapsense* file of the respective application, which is present in the *{Application root directory}/bsps/TARGET_APP_\<BSP-NAME>/config/* folder.
 
-    3. Ensure the kit is in CMSIS-DAP bulk mode (KitProg3 status LED is ON and not blinking). See [Firmware-loader](https://github.com/Infineon/Firmware-loader) to learn on how to update the firmware and switch modes in KitProg3.
-  
-    4. In the tuner application, click on the **Tuner Communication Setup** icon or select **Tools** > **Tuner Communication Setup**. In the window, select the I2C checkbox under KitProg3 and configure as follows:
+	     See the [ModusToolbox&trade; software user guide](https://www.infineon.com/ModusToolboxUserGuide) (locally available at *ModusToolbox&trade; install directory}/docs_{version}/mtb_user_guide.pdf*) for options to open the CAPSENSE&trade; Tuner application using the CLI.
+
+    2. Ensure the kit is in CMSIS-DAP bulk mode (KitProg3 status LED is ON and not blinking). See [Firmware-loader](https://github.com/Infineon/Firmware-loader) to learn how to update the firmware and switch modes in KitProg3.
+
+    3. In the tuner application, click on the **Tuner Communication Setup** icon or select **Tools** > **Tuner Communication Setup**. In the window, select the I2C checkbox under KitProg3 and configure as follows:
 
        - **I2C address:** 8
        - **Sub-address:** 2 bytes
@@ -207,13 +204,13 @@ The project already has the necessary settings by default, so you can go to [Ope
 
         <img src="images/tuner-comm-setup.png" alt="" width="600" />
 
-    5. Click **Connect** or select **Communication** > **Connect** to establish a connection.
+    4. Click **Connect** or select **Communication** > **Connect** to establish a connection.
 
-        **Figure 3. Establish connection**
+        **Figure 3. Establish a connection**
 
         <img src="images/tuner-connect.png" alt="" width="400" />
 
-    6. Click **Start** or select **Communication** > **Start** to start data streaming from the device.
+    5. Click **Start** or select **Communication** > **Start** to start data streaming from the device.
 
          **Figure 4. Start tuner communication**
 
@@ -221,13 +218,13 @@ The project already has the necessary settings by default, so you can go to [Ope
 
          The **Widget/Sensor parameters** tab gets updated with the parameters configured in the **CAPSENSE&trade; configurator** window. The tuner displays the data from the sensor in the **Widget View** and **Graph View** tabs.
 
-7. Set the **Read Mode** to the **Synchronized** mode. Under the **Widget View** tab, you can see the touchpad widget sensors highlighted when you touch it.
+6. Set the **Read Mode** to the **Synchronized** mode. Under the **Widget View** tab, you can see the touchpad widget sensors highlighted when you touch it.
 
       **Figure 5. Widget view of the CAPSENSE&trade; tuner**
 
    <img src="images/widget-view.png" alt=""/>
 
-8. You can view the raw count, baseline, difference count for each sensor and also the touchpad position in the **Graph View** tab. For example, to view the sensor data for a single sensor in Touchpad, select **Touchpad_Rx0_Tx0** under **Touchpad**.
+7. You can view the raw count, baseline, difference count for each sensor and also the touchpad position in the **Graph View** tab. For example, to view the sensor data for a single sensor in Touchpad, select **Touchpad_Rx0_Tx0** under **Touchpad**.
    
     
    **Figure 6. Graph view of the CAPSENSE&trade; tuner**
@@ -236,15 +233,15 @@ The project already has the necessary settings by default, so you can go to [Ope
 
    <img src="images/graph_view.png" alt=""/>
 
-9. The **Touchpad View** tab shows the heat map view; it visualizes the finger movement.
+8. The **Touchpad View** tab shows the heat map view and the finger movement can be visualized on the same.
 
    **Figure 7. Touchpad view of the CAPSENSE&trade; Tuner**
 
    <img src="images/touchpad-view-tuner.png" alt=""/>
 
-10. Observe the **Widget/Sensor Parameters** section in the CAPSENSE&trade; Tuner window. The compensation CDAC values for each touchpad sensor element calculated by the CAPSENSE&trade; resource is displayed as shown in **Figure 7**.
+9. Observe the **Widget/Sensor Parameters** section in the CAPSENSE&trade; Tuner window. The compensation CDAC values for each touchpad sensor element calculated by the CAPSENSE&trade; resource is displayed as shown in **Figure 7**.
 
-11. Verify that the SNR is greater than 5:1 by following the steps given in **Stage 4** starting with **Step 6** in the [Tuning procedure](#tuning-procedure).
+10. Verify that the SNR is greater than 5:1 by following the steps given in **Stage 5** [Tuning procedure](#tuning-procedure).
 
 The linearity of the position graph, non-reporting of false touches, and no discontinuity in the line drawing indicate a proper tuning.
 
@@ -257,7 +254,7 @@ The linearity of the position graph, non-reporting of false touches, and no disc
 
 <details><summary><b> Create custom BSP for your board </b></summary>
 
-1. Create a custom BSP for your board having any device, by following the steps given in [ModusToolbox™ BSP Assistant user guide](https://www.infineon.com/dgdl/Infineon-ModusToolbox_BSP_Assistant_1.0_User_Guide-UserManual-v02_00-EN.pdf?fileId=8ac78c8c8386267f0183a972f45c59af). This code example was created for the device "CY8C4046LQI-T452".
+1. Create a custom BSP for your board with any device by following the steps given in [ModusToolbox™ BSP Assistant user guide](https://www.infineon.com/ModusToolboxBSPAssistant). This code example was created for the device "CY8C4046LQI-T452".
 
 2. Open the *design.modus* file from the *{Application root directory}/bsps/TARGET_APP_\<BSP-NAME>/config/* folder obtained in the previous step and enable CAPSENSE&trade; to get the *design.cycapsense* file. CAPSENSE&trade; configuration can then be started from scratch as explained below.
 
@@ -266,7 +263,7 @@ The linearity of the position graph, non-reporting of false touches, and no disc
 
 The following steps explain the tuning procedure. 
 
-**Note:** See the section "Selecting CAPSENSE&trade; hardware parameters" in the [PSoC&trade; 4 and PSoC&trade; 6 MCU CAPSENSE&trade; design guide](https://www.infineon.com/dgdl/Infineon-AN85951_PSoC_4_and_PSoC_6_MCU_CapSense_Design_Guide-ApplicationNotes-v27_00-EN.pdf?fileId=8ac78c8c7cdc391c017d0723535d4661) to learn about the considerations for selecting each parameter values.
+**Note:** See the "Selecting CAPSENSE&trade; hardware parameters" section in the [PSoC&trade; 4 and PSoC&trade; 6 MCU CAPSENSE&trade; design guide](https://www.infineon.com/AN85951) to learn about the considerations for selecting each parameter values.
 
 **Figure 8. CSX touchpad widget tuning flow**
 
@@ -276,13 +273,13 @@ Do the following to tune the touchpad widget:
 
 - [Stage 1: Set initial hardware parameters](#stage-1-set-initial-hardware-parameters)
 
-- [Stage 2: Set Tx clock frequency](#stage-2-set-tx-clock-frequency)
+- [Stage 2: Measure Sensor Capacitance to set CDAC Dither](#stage-2-measure-sensor-capacitance-to-set-cdac-dither)
 
-- [Stage 3: Obtain crossover point and noise](#stage-3-obtain-crossover-point-and-noise)
+- [Stage 3: Set the Sense clock frequency](#stage-3-set-the-sense-clock-frequency)
 
-- [Stage 4: Fine-tune sensitivity for 5:1 SNR](#stage-4-fine-tune-sensitivity-for-51-snr)
+- [Stage 4: Obtain crossover point and noise](#stage-4-obtain-crossover-point-and-noise)
 
-- [Stage 5: Configure CDAC dither parameters](#stage-5-configure-cdac-dither-parameters)
+- [Stage 5: Fine-tune sensitivity for 5:1 SNR](#stage-5-fine-tune-sensitivity-for-51-snr)
 
 - [Stage 6: Tune threshold parameters](#stage-6-tune-threshold-parameters)
 
@@ -294,7 +291,7 @@ Do the following to tune the touchpad widget:
 
    You can launch the device configurator in Eclipse IDE for ModusToolbox&trade; from the **Tools** section in the IDE Quick panel or in standalone mode from *{ModusToolbox&trade; install directory}/ModusToolbox/tools_{version}/device-configurator/device-configurator*. In this case, after opening the application, select **File** > **Open** and open the *design.modus* file of the respective application, which is present in the *{Application root directory}/bsps/TARGET_APP_\<BSP-NAME>/config/* folder.
 
-3. In the PSoC&trade; 4000T kit, the touchpad pins are connected to CAPSENSE&trade; channel (MSCLP 0). Therefore, make sure to enable CAPSENSE&trade; channel in the device configurator as shown in **Figure 9**.
+3. In the [PSoC&trade; 4000T Kit](https://www.infineon.com/CY8CKIT-040T), the touchpad pins are connected to CAPSENSE&trade; channel (MSCLP 0). Therefore, make sure that you enable CAPSENSE&trade; channel in the Device Configurator, as shown in Figure 9.
 
    **Figure 9. Enable MSCLP channel in device configurator**
 
@@ -324,9 +321,9 @@ Do the following to tune the touchpad widget:
 
    - **Number of init sub-conversions** is set based on the hint shown when you hover over the edit box. Retain the default value. 
    
-   - Because CIC2 filter is enabled, it is recommended to enable IIR filter. Retain the default settings for all filters. You can enable the filters later depending on the signal-to-noise ratio (SNR) requirements mentioned in **Stage 4**.
+   - Because CIC2 filter is enabled, it is recommended to enable IIR filter. Retain the default settings for all filters. You can enable the filters later depending on the signal-to-noise ratio (SNR) requirements mentioned in **Stage 5**.
       
-      Filters are used to reduce the peak-to-peak noise. Using filters will result in higher scan time.
+      Filters are used to reduce the peak-to-peak noise. Using filters will result in longer scan time.
 
    **Figure 11. CAPSENSE&trade; Configurator - General settings**
 
@@ -342,7 +339,7 @@ Do the following to tune the touchpad widget:
 
    - Select **Enable CDAC auto-calibration** and **Enable compensation CDAC**. 
 
-      This helps in achieving the required CDAC calibration levels (85% of maximum count) for all sensors in the widget, while maintaining the same sensitivity across the sensor elements.
+      This helps in achieving the required CDAC calibration levels (40% of the maximum count) for all sensors in the widget, while maintaining the same sensitivity across the sensor elements.
 
    - Select **Enable CDAC dither**.
 
@@ -356,7 +353,7 @@ Do the following to tune the touchpad widget:
 
    - **Maximum X-Axis position** and **Maximum Y-Axis position** to 255.
 
-   - **Tx clock divider:** Retain default value (will be set in **Stage 2**)
+   - **Tx clock divider:** Retain default value (will be set in **Stage 3**)
 
    - **Clock source:** **Direct**
 
@@ -376,7 +373,7 @@ Do the following to tune the touchpad widget:
 
    - **Hysteresis:** 5
 
-   - **ON debounce:** 3
+   - **ON debounce:** 10
 
       These values reduces the influence of baseline on the sensor signal, which helps to get the true difference-count. Retain the default values for the widget threshold parameters; these parameters are set in **Stage 6**.
 
@@ -402,89 +399,127 @@ Do the following to tune the touchpad widget:
 
 <br>
 
-### Stage 2: Set Tx clock frequency
--------------------
-The maximum frequency set should charge and discharge the sensor completely, which is verified using an oscilloscope and an active probe. To view the charging and discharging waveforms of the sensor, probe at the sensors (or as close as possible to the sensors), and not at the pins or resistor. Refer **Figure 15** and **Figure 16** for more deatils. You can also use a passive probe which will add an additional parasitic capacitance of around 15 pF, therefore the tuning may be not optimal. These figures show the signals observed on shield.
+### Stage 2: Measure the sensor capacitance to set CDAC Dither
+------------
 
-**Figure 15**  shows proper charging when sense clock frequency is correctly tuned i.e., the voltage is settling to the required voltage at the end of each phase.**Figure 16** shows incomplete settling (charging/discharing) and hence the sense clock divider is set to 18 as shown in **Figure 15**.
+The CAPSENSE&trade; middleware provides the built-in self-test (BIST) APIs to measure capacitances of sensors configured in the application. The sensor capacitances are referred to as  **C<sub>p</sub>** for CSD sensors and **C<sub>m</sub>** for CSX sensor.
 
- **Notes:** 
-   - If you are explicitly using the PRS or SSCx clock source to lower electromagnetic interference, ensure that you select the sense clock frequency that meets the conditions mentioned in the [ModusToolbox&trade; CAPSENSE&trade; configurator guide](https://www.infineon.com/dgdl/Infineon-ModusToolbox_CapSense_Configurator_Guide_(Version_2.0)-Software-v01_00-EN.pdf?fileId=8ac78c8c7e7124d1017ed9999c3b364d&utm_source=cypress&utm_medium=referral&utm_campaign=202110_globe_en_all_integration-files) in addition to the above conditions. PRS and SSCx techniques spread the frequency across a range.
+Follow these steps to measure the C<sub>p</sub>/C<sub>m</sub> using BIST:
 
-   - Actual sense clock frequency value is chosen such that the divider is divisible by 2 to have all two scan phases for equal durations. 
+   1.	Open CAPSENSE™ Configurator from **Quick Panel** and enable the BIST library.
 
-The project uses max sense clock frequency by default. If an incomplete charging/discharging is observed (as in **Figure 16**), the sense clock divider is increased until the sensor is fully charged/discharged.
-For tuning your board, ensure to charge/discharge by probing at the sensor.
+   **Figure 15. Enabling self test library**
 
+   <img src="images/bist_measurement.png" alt="Figure 280" width=700>
 
+   2.	Follow these steps to get the capacitance(C<sub>p</sub>/C<sub>m</sub>):
+        - Add a breakpoint at the function call "measure_sensor_capacitance()" in *main.c*.
+        - Run the application in debug mode.
+        - Click the **Step over** button once break point hits.
+        - Add an array variable sensor_capacitance to the **Expressions view** tab that holds the measured Cp values of configured sensors.
 
+   **Figure 16. Measure C<sub>p</sub>/C<sub>m</sub> using BIST**
 
-
-**Figure 15. Proper charge cycle of a sensor**
-
-   <img src="images/csdrm-waveform.png" alt="" width="400"/>
-
-   **Figure 16. Improper charge cycle of a sensor**
-
-   <img src="images/csdrm-waveform_improper.png" alt="" width="400"/>
+   <img src="images/debug-cp-measure.png" alt="Figure 280" width=700/>
    
-Observe Point A and B marked in **Figure 15**, it is charging/discharging properly to 0 V whereas in **Figure 16**, it is not reaching to 0 V.
-  
+   3.	The index of the sensor_capacitance array matches the sensor configuration in CAPSENSE&trade; Configurator, as shown in Figure 17.
 
-   Set the final value in the CAPSENSE&trade; configurator using the steps given in **Step 8** of **Stage 1**, which ensures the maximum possible sense clock frequency (for good gain) while allowing the sensor capacitance to fully charge and discharge in each phase of the MSCLP CSD sensing method.
+   **Figure 17. Cp array index alignment**
 
-   As per the oscilloscope measurements, at **18 sense clock frequency** sensor is getting charge and discharge completely.
+   <img src="images/cp_alignment.png" alt="Figure 28" width=700/>
+
+   
+
+   4. For more details on BIST, See [CAPSENSE™ library and documents](https://github.com/Infineon/capsense).
+   5. Keep this feature disabled in CAPSENSE&trade; Configurator, if not used in application.
+
+### **CDAC Dither scale setting**
 <br>
 
-### Stage 3: Obtain crossover point and noise
+MSCLP uses CDAC dithering to reduce flat spots. Select the optimal dither scale parameter based on the sensor capacitance measured using BIST library.
+
+See the following table for general recommended values of Dither scale.
+
+**Table 1. Dither scale recommendation for CSD sensors**
+ 
+Parasitic capacitance (C<sub>p</sub>) | Scale
+:---: | :---:  
+2pF <= C<sub>p</sub> < 3pF | 3
+3pF <= C<sub>p</sub> < 5pF | 2
+5pF <= C<sub>p</sub> < 10pF | 1
+ C<sub>p</sub> >= 10pF  | 0
+
+<br>
+
+**Table 2. Dither Scale recommendation for CSX sensors**
+ 
+Mutual capacitance (C<sub>m</sub>) | Scale
+:---: | :---:  
+300fF <= C<sub>m</sub> < 500fF | 5
+500fF <= C<sub>m</sub> < 1000fF | 4
+1000fF <= C<sub>m</sub> < 2000fF | 3
+C<sub>m</sub> >= 2pF  | Follow [Table 1](#Table-1.-Dither-Scale-Recommendation-for-CSD-Sensors)
+
+ Set the scale value in CAPSENSE&trade; Configurator as follows.
+
+**Figure 18. CDAC Dither scale setting**
+
+   <img src="images/dither-scale-value.png" alt="Figure 18" width=800/>
+
+
+### Stage 3: Set the sense clock frequency
+-----------------
+
+The sense clock is derived from the modulator clock using a clock-divider and is used to scan the sensor by driving the CAPSENSE&trade; switched capacitor circuits. Both the clock source and clock divider are configurable. The sense clock divider should be configured such that the pulse width of the sense clock is long enough to allow the sensor capacitance to charge and discharge completely. This is verified by observing the charging and discharging waveforms of the sensor using an oscilloscope and an active probe. The sensors should be probed close to the electrode and not at the sense pins or the series resistor. 
+
+See [Figure 19](#figure-19-proper-charge-cycle-of-a-sensor) and [Figure 20](#figure-20-improper-charge-cycle-of-a-sensor) for waveforms observed on the shield. [Figure 19](#figure-19-proper-charge-cycle-of-a-sensor) shows proper charging when the sense clock frequency is correctly tuned. The pulse width is at least 5 Tau, i.e., the voltage is reaching at least 99.3% of the required voltage at the end of each phase. [Figure 20](#figure-20-improper-charge-cycle-of-a-sensor) shows incomplete settling (charging/discharging).
+
+
+**Figure 19. Proper charge cycle of a sensor**
+
+<img src="images/csdrm-waveform.png" alt="Figure 19" width="600"/>
+
+<br>
+
+**Figure 20. Improper charge cycle of a sensor**
+
+<img src="images/csdrm-waveform-improper.png" alt="Figure 20" width="600"/>
+
+1. Program the board and launch CAPSENSE&trade; Tuner.
+
+2. See the charging waveform of the sensor as described earlier. 
+
+3. If the charging is incomplete, increase the sense clock divider. This can be done in CAPSENSE&trade; Tuner by selecting the Sensor and editing the **Sense Clock Divider** parameter in the Widget/Sensor Parameters panel.
+
+   **Note:** The sense clock divider should be **divisible by 2**. This ensures that both the scan phases have equal durations. 
+
+   After editing the value, click the **Apply to Device** button and observe the waveform again. Repeat this until complete settling is observed.  
+   
+4. Click the Apply to Project button so that the configuration is saved to your project. 
+
+   **Figure 21. Sense Clock Divider setting**
+
+   <img src="images/sense_clock_divider_setting.png" alt="Figure 21" />
+   
+
+5. Repeat this process for all the sensors and the Shield. Each sensor may require a different sense clock divider value to charge/discharge completely. But all the sensors that are in the same scan slot need to have the same sense clock source, sense clock divider, and number of sub-conversions. Therefore, take the largest sense clock divider in a given scan slot and apply it to all the other sensors that share that slot.
+
+<br>
+
+### Stage 4: Obtain crossover point and noise
 ----------------------
 1. Program the board.
 
-2. Select the I2C mode by running the *Select_I2C* batch file as mentioned in section **Monitor data using CAPSENSE&trade; Tuner**. Launch the CAPSENSE&trade; Tuner to monitor the CAPSENSE&trade; data and for CAPSENSE&trade; parameter tuning and SNR measurement.
+2. Launch the CAPSENSE&trade; Tuner to monitor the CAPSENSE&trade; data and for CAPSENSE&trade; parameter tuning and SNR measurement.
 
-   See the [CAPSENSE&trade; tuner guide](https://www.infineon.com/dgdl/Infineon-ModusToolbox_CAPSENSE_Tuner_Guide_4-UserManual-v01_00-EN.pdf?fileId=8ac78c8c7d718a49017d99ab0fda31c5) for step-by-step instructions on how to launch and configure the CAPSENSE&trade; Tuner in ModusToolbox&trade; software.
+   See the [CAPSENSE&trade; Tuner guide](https://www.infineon.com/ModusToolboxCapSenseTune) for step-by-step instructions on how to launch and configure the CAPSENSE&trade; Tuner in ModusToolbox&trade; software.
 
-3. Ensure that the auto-calibrated CDAC is within the recommended range.
 
-   **Note:** Calibration may fail if the obtained raw counts is not within the targeted range. 
 
-   - As discussed in **Stage 2**, the Tx clock divider will be tuned to bring the CDAC values to the recommended range in this step.
 
-   - Click **Touchpad** in the **Widget Explorer** to view the reference CDAC value in the sensor parameters window as shown in **Figure 17**.
 
-   - Also, click each sensor element (*Touchpad_Rx0_Tx0* for example) in the **Widget Explorer** to view the compensation CDAC in the sensor parameters window as shown in **Figure 17**.
-
-   - If the reference CDAC value is within the range (10/Compensation CDAC Divider) to 255 and compensation CDAC values are in the range 1 to 255, then step 5 is not required.
-
-     **Figure 17. CDAC value**
-
-     <img src="images/tuner-cdac-setting.png" alt="" width="500"/>
-
-   See the [AN85951 - PSoC&trade;4 and PSoC&trade;6 MCU CAPSENSE&trade; design guide](https://www.infineon.com/AN85951) for the recommended guidelines on valid CDAC range (with and without compensation enabled) to result in calibration PASS across multiple boards because of board-to-board variations.
-
-4. If the above condition is not satisfied, fine-tune the Tx clock divider to bring the CDAC value within range.
-
-   From **Raw Count Equation** in [AN234231 - Achieving lowest-power capacitive sensing with PSoC&trade; 4000T](https://www.infineon.com/AN234231), it is evident that decreasing the Tx clock divider will increase the reference CDAC value for a given calibration percent and vice versa.
-
-   1. If the reference CDAC value is not in the recommended range, decrease the Tx clock divider in the Widget Hardware Parameters window.
-
-   2. Click **To Device** to apply the changes to the device as shown in **Figure 18**.
-   
-      **Figure 18. Apply changes to device**
-
-      <img src="images/tuner-apply-settings.png" alt="" width="600"/>
-
-   3. Click each sensor element, for instance, **Touchpad_Rx0_Tx0** in the Widget Explorer.
-
-   4. Observe the compensation CDAC value in the **Sensing Parameters** section of the Widget/Sensor Parameters window.
-
-   5. If the reference CDAC values are still not in the required range and F<sub>Tx</sub> is exceeding the allowed limit, reduce the modulator clock frequency to the next lower value.
-
-   6. Repeat steps 1 to 6 until you obtain Reference CDAC values in the range (10/Compensation CDAC Divider) to 255 and Compensation CDAC values are in the range 1 to 255.
-
-      **Note:** As **Figure 17** shows, CDAC values are already in the recommended range. Therefore, you can leave the Tx clock divider to the value as shown in **Stage 2**.
-
-5. Capture the raw counts of each sensor element in the touchpad (as shown in **Figure 19**) and verify that they are approximately (+/- 5%) equal to 40% of the MaxCount. See [AN234231 - Achieving lowest-power capacitive sensing with PSoC&trade; 4000T](https://www.infineon.com/AN234231) for the MaxCount equation.
+     
+3. Capture the raw counts of each sensor element in the touchpad (as shown in **Figure 22**) and verify that they are approximately (+/- 5%) equal to 40% of the MaxCount. See [design guide](https://www.infineon.com/AN85951) for the MaxCount equation.
 
    1. Go to the **Touchpad View** tab and change the **Display settings** as follows:
 
@@ -494,11 +529,11 @@ Observe Point A and B marked in **Figure 15**, it is charging/discharging proper
 
       - **Number of samples:** 1000
 
-    **Figure 19. Raw counts obtained on the Touchpad View tab in the tuner window**
+    **Figure 22. Raw counts obtained on the Touchpad View tab in the tuner window**
 
      <img src="images/touchpad-view-rc.png" alt="" />
 
-6. Capture and note the peak-to-peak noise of each sensor element in the touchpad.
+4. Capture and note the peak-to-peak noise of each sensor element in the touchpad.
 
    1. From the **Widget Explorer** section, select the  **Touchpad** widget.
 
@@ -514,21 +549,21 @@ Observe Point A and B marked in **Figure 15**, it is charging/discharging proper
 
       Capture the variation in the raw counts for 1000 samples, without placing a finger (which gives the peak-to-peak noise) and note the highest noise.
 
-      **Note:** Under **Widget selection**, enable **Flip Y-axis** and **Swap XY-axes** for proper visualization of finger movement on the touchpad.
+      **Note:** Under **Widget selection**, enable **Swap XY-axes** for proper visualization of finger movement on the touchpad.
 
-      **Figure 20. Noise obtained on the Touchpad View tab in the tuner window**
+      **Figure 23. Noise obtained on the Touchpad View tab in the tuner window**
 
       <img src="images/touchpad-view-noise.png" alt="" />
 
-      **Table 1. Max peak-to-peak noise obtained in CY8CKIT-040T**
+      **Table 3. Max peak-to-peak noise obtained in CY8CKIT-040T**
 
       |Kit | Max peak-to-peak noise|
       |:----------|:-------------------------|
-      |CY8CKIT-040T   |132|
+      |CY8CKIT-040T   |173|
 
 7. A finger (6 mm) should be held on the touchpad in the least touch intensity (LTI) position (at the intersection of four nodes) as shown in the following figure.
 
-   **Figure 21. Least touch intensity (LTI) position**
+   **Figure 24. Least touch intensity (LTI) position**
 
    <img src="images/lti-position.png" alt="" width="100" />
 
@@ -542,19 +577,19 @@ Observe Point A and B marked in **Figure 15**, it is charging/discharging proper
 
       - **Value type:** Current
 
-   2. Place the finger such that an almost equal signal is obtained in all four intersecting nodes (look at the heat map displayed in the **Touchpad View** tab as shown in **Figure 22**).
+   2. Place the finger such that an almost equal signal is obtained in all four intersecting nodes (look at the heat map displayed in the **Touchpad View** tab as shown in **Figure 25**).
 
       **Note:** The LTI signal is measured at the farthest point of the touchpad from the sensor pin connection, where the sensors have the worst-case RC-time constant.
 
-      **Figure 22. LTI position in touchpad view**
+      **Figure 25. LTI position in touchpad view**
 
       <img src="images/touchpad-view-lti.png" alt="" />
 
-      LTI Signal = (1112 + 1151 + 1056 + 1139)/4 = 1115
+      LTI Signal = (1145 + 1060 + 1114 + 1183)/4 = 1125
 
 <br>
 
-### Stage 4. Fine-tune sensitivity for 5:1 SNR
+### Stage 5. Fine-tune sensitivity for 5:1 SNR
 ----------------------
 
 The CAPSENSE&trade; system may be required to work reliably in adverse conditions such as a noisy environment. The touchpad sensors should be tuned with SNR > 5:1 to avoid triggering false touches and to make sure that all intended touches are registered in these adverse conditions.
@@ -571,15 +606,15 @@ The CAPSENSE&trade; system may be required to work reliably in adverse condition
 
    Where,
 
-   - LTI signal is the signal obtained as shown in **Figure 22**
+   - LTI signal is the signal obtained as shown in **Figure 25**
 
-   - Pk-Pk noise is the peak-to-peak noise obtained as shown in **Figure 20**
+   - Pk-Pk noise is the peak-to-peak noise obtained as shown in **Figure 23**
 
    SNR is measured using **Equation 1**.
 
-   Here, from **Figure 20** and **Figure 22**,
+   Here, from **Figure 23** and **Figure 25**,
 
-   SNR = 1115/132 = **8.45**
+   SNR = 1125/173 = **6.5**
 
    **Note:** Ensure that the **Number of sub-conversions** (Nsub) does not exceed the max limit and saturate the raw count.
 
@@ -608,47 +643,13 @@ The CAPSENSE&trade; system may be required to work reliably in adverse condition
 4. If the SNR condition is not achieved even with the maximum number of sub-conversions, enable filters in the **General** settings (go to the **Advanced** tab of the CAPSENSE&trade; configurator). This is generally not required for this kit.
 <br>
 
-### Stage 5: Configure CDAC dither parameters
---------------------
-
-  MSCLP uses CDAC dithering to reduce flat spots. The optimal polynomial and other parameters depend on number of sub-conversions (N<sub>sub</sub>).
-
-  The macros show the recommended dither parameters in **main.c**,
-```
-   #define	CDAC_DITHER_SCALE          0u
-
-   #define	CDAC_DITHER_SEED           127u
-
-   #define	CDAC_DITHER_POLY           65u
-```
-
-  **Table 2** shows the general recommended values of dither parameters based on N<sub>sub</sub> selection.
-
-   **Table 2.  General recommendations of dither parameters**
-
-N<sub>sub</sub> Range | CDAC_Dither_poly| CDAC_Dither_Seed |  CDAC_Dither_scale
-:---: | :---: | :---: | :---: 
-8 to 12 | 9 | 15 | 1
-13 to 15 | 9 | 15 | 0
-16 to 23 | 18 | 31 | 1
-24 to 31 | 18 | 31 | 0
-32 to 41 | 33 | 63 | 1
-42 to 63 | 33 | 63 | 0
-64 to 84 | 65 | 127 | 1
-85 to 127 | 65 | 127 | 0
-128 to 174 | 142 | 255 | 1
-175 to 255 | 142 | 255 | 0
-\>255 | 142 | 255 | 0
-
-<br>
-
 ### Stage 6: Tune threshold parameters
 -------------------------
 After confirming that your design meets the timing parameters and power requirements, and the SNR is greater than 5:1, set your threshold parameters.
 
 **Note:** Thresholds are set based on the LTI position, because it is the least valid touch signal that can be obtained.
 
-Set the recommended threshold values for the Touchpad widget using the LTI signal value obtained in **Stage 4**:
+Set the recommended threshold values for the Touchpad widget using the LTI signal value obtained in **Stage 5**:
 
    - **Finger Threshold:** 80% of the LTI signal
 
@@ -666,13 +667,13 @@ Set the recommended threshold values for the Touchpad widget using the LTI signa
 
       3. Record the max-min count value (Max_Min_count) of the selected 2x2 sensors.
 
-         **Figure 23. Obtaining the hysteresis**
+         **Figure 26. Obtaining the hysteresis**
 
          <img src="images/touchpad-view-hys.png" alt="" width="1000" />
 
-      4. Hysteresis = Max_Min_count/2 = 200/2 = 100
+      4. Hysteresis = Max_Min_count/2 = 215/2 = 107
 
-   - **ON Debounce:** Default value of 3 (Set to 1 for gesture detection)
+   - **ON Debounce:**  10 (Set to 1 for gesture detection)
 
    - **Low Baseline Reset:** Default value of 30
 
@@ -680,17 +681,17 @@ Set the recommended threshold values for the Touchpad widget using the LTI signa
 
       **Note:** For multiple finger detection, if the velocity value is low, two touches at different positions are considered to be two different finger touches. On the other hand, if it is set at a higher value, it is considered to be the same finger moving to a different position.
 
-   **Table 3. Software tuning parameters obtained for CY8CKIT-040T**
+   **Table 4. Software tuning parameters obtained for CY8CKIT-040T**
 
    |Parameter|	CY8CKIT-040T |
    |:--------|:------|
-   |Number of Sub-conversions	| 100 |
-   |Finger threshold 	| 892 |
-   |Noise threshold | 446 |
-   |Negative noise threshold	| 446 |
+   |Number of Sub-conversions	| 180 |
+   |Finger threshold 	| 900 |
+   |Noise threshold | 450 |
+   |Negative noise threshold	| 450 |
    |Low baseline reset	| 30 |
-   |Hysteresis	| 100 |
-   |ON debounce	| 3 |
+   |Hysteresis	| 107 |
+   |ON debounce	| 10 |
    |Velocity| 2500 |
 
 <br>
@@ -699,7 +700,7 @@ Set the recommended threshold values for the Touchpad widget using the LTI signa
 
 1. Click **Apply to Device** and **Apply to Project** in the CAPSENSE&trade; Tuner window to apply the settings to the device and project, respectively. Close the tuner.
 
-   **Figure 24. Apply to Project**
+   **Figure 27. Apply to Project**
 
    <img src="images/apply_to_project.png" alt="" width="500" />
 
@@ -711,21 +712,14 @@ Set the recommended threshold values for the Touchpad widget using the LTI signa
 
 You can debug the example to step through the code. In the IDE, use the **\<Application Name> Debug (KitProg3_MiniProg4)** configuration in the **Quick Panel**. For details, see the "Program and debug" section in the [Eclipse IDE for ModusToolbox&trade; software user guide](https://www.infineon.com/MTBEclipseIDEUserGuide).
 
-**Note:** The debug port is disabled by default for CY8CKIT-040T, because it uses the pins P3[2] (SWDIO) and P3[3] (SWDCK) for I2C SDA and SCL. If debug is required - 
-   1. Enable the **Debug Mode** under the **Systems** tab in the **Device Configurator** and change the **Debug Mode** setting to **SWD**. 
-   2. Configure SWDIO as P3[2] and SWDCK as P3[3] pins.
-   3. Disable I2C in the project by disabling the **Serial Communication Block (SCB)** resource with **EZI2C** personality in **Peripherals Tab** in the **Device Configurator**.
-   4. Enable the **SWD_DEBUG_ENABLE** macro present in the *main.c* file as follows: *#define SWD_DEBUG_ENABLE (1u)*. See **Step 4** in **Section 2.3** of the Kit guide for more details.
 
 ## Design and implementation
 
 The project contains a touchpad widget configured in CSX-RM Sensing Mode. See the [Tuning procedure](#tuning-procedure) section for step-by-step instructions to configure the other settings of the **CAPSENSE&trade; configurator**.
 
-The project uses the [CAPSENSE&trade; middleware](https://Infineon.github.io/capsense/capsense_api_reference_manual/html/index.html); see the [ModusToolbox&trade; software user guide](https://www.infineon.com/dgdl/Infineon-ModusToolbox_2.4_User_Guide-Software-v01_00-EN.pdf?fileId=8ac78c8c7e7124d1017ed97e72563632) for more details on selecting a middleware. 
+The project uses the [CAPSENSE&trade; middleware](https://github.com/Infineon/capsense) (see ModusToolbox&trade; user guide for more details on selecting a middleware). See [AN85951 – PSoC&trade; 4 and PSoC&trade; 6 MCU CAPSENSE&trade; design guide](https://www.infineon.com/AN85951) for more details on CAPSENSE&trade; features and usage.
 
-The project uses the [CAPSENSE&trade; middleware](https://github.com/Infineon/capsense) (see ModusToolbox&trade; user guide for more details on selecting a middleware). See [AN85951 – PSoC&trade; 4 and PSoC&trade; 6 MCU CAPSENSE&trade; design guide](https://www.infineon.com/dgdl/Infineon-AN85951_PSoC_4_and_PSoC_6_MCU_CapSense_Design_Guide-ApplicationNotes-v27_00-EN.pdf?fileId=8ac78c8c7cdc391c017d0723535d4661&utm_source=cypress&utm_medium=referral&utm_campaign=202110_globe_en_all_integration-application_note) for more details on CAPSENSE&trade; features and usage.
-
-The [ModusToolbox&trade; software](https://www.infineon.com/cms/en/design-support/tools/sdk/modustoolbox-software/?utm_source=cypress&utm_medium=referral&utm_campaign=202110_globe_en_all_integration-product_families) provides a GUI-based tuner application for debugging and tuning the CAPSENSE&trade; system. The *CAPSENSE&trade; tuner* application works with EZI2C and UART communication interfaces. This project has an SCB block configured in EZI2C mode to establish communication with the on-board KitProg, which in turn enables reading the CAPSENSE&trade; raw data by the CAPSENSE&trade; tuner. See **Figure 26**.
+The [ModusToolbox&trade; software](https://www.infineon.com/modustoolbox) provides a GUI-based tuner application for debugging and tuning the CAPSENSE&trade; system. The CAPSENSE&trade; Tuner application works with EZI2C and UART communication interfaces. This project has an SCB block configured in EZI2C mode to establish communication with the onboard KitProg, which in turn enables reading the CAPSENSE&trade; raw data by the CAPSENSE&trade; Tuner; see Figure 24.
 
 The CAPSENSE&trade; data structure that contains the CAPSENSE&trade; raw data is exposed to the CAPSENSE&trade; tuner by setting up the I2C communication data buffer with the CAPSENSE&trade; data structure. This enables the tuner to access the CAPSENSE&trade; raw data for tuning and debugging CAPSENSE&trade;.
 
@@ -737,9 +731,9 @@ The MOSI pin of the SPI slave peripheral is used to transfer data to the three s
 
 1. Open Device configurator from the Quick panel. 
 
-2. Go to the **Systems** tab, select the **Power** resource, and set the VDDA value under **Operating Conditions** as shown in **Figure 27**.
+2. Go to the **Systems** tab, select the **Power** resource, and set the VDDA value under **Operating Conditions** as shown in **Figure 28**.
 
-   **Figure 25. Setting the VDDA supply in the system tab of device configurator**
+   **Figure 28. Setting the VDDA supply in the system tab of device configurator**
 
    <img src="images/vdda-settings.png" alt="" width="800"/>
 
@@ -747,15 +741,15 @@ The MOSI pin of the SPI slave peripheral is used to transfer data to the three s
 
 See the [Operation](#operation) section for step-by-step instructions to configure the CAPSENSE&trade; configurator.
 
-**Figure 26. Device configurator - EZI2C peripheral parameters**
+**Figure 29. Device configurator - EZI2C peripheral parameters**
 
 <img src="images/ezi2c_config.png" alt="" width="600"/>
 
-**Figure 27. SPI settings**
+**Figure 30. SPI settings**
 
 <img src="images/spi-settings.png" alt="" width="600"/>
 
-**Table 4. Application resources**
+**Table 5. Application resources**
 
 
 
@@ -767,7 +761,7 @@ See the [Operation](#operation) section for step-by-step instructions to configu
 
 ### Firmware flow
 
-**Figure 28. Firmware flowchart**
+**Figure 31. Firmware flowchart**
 
 <img src="images/firmware_flow.png" alt="" width="400"/>
 
@@ -799,15 +793,16 @@ Document title: *CE235339* - *PSoC&trade; 4: MSCLP multi-touch mutual-capacitanc
  1.0.1   | Project dependency update. 
  1.1.0   | Minor folder structure changes that doesn't break backward compatibility.
  1.2.0   | Minor README and configuration update.
+ 2.0.0   | Major update to support ModusToolbox™ software v3.1 This version is not backward compatible with ModusToolbox™ software v3.0.
 
 
 
- 
+All other trademarks or registered trademarks referenced herein are the property of their respective owners.
 
 ---------------------------------------------------------
 
-© Cypress Semiconductor Corporation, 2022-2023. This document is the property of Cypress Semiconductor Corporation, an Infineon Technologies company, and its affiliates ("Cypress").  This document, including any software or firmware included or referenced in this document ("Software"), is owned by Cypress under the intellectual property laws and treaties of the United States and other countries worldwide.  Cypress reserves all rights under such laws and treaties and does not, except as specifically stated in this paragraph, grant any license under its patents, copyrights, trademarks, or other intellectual property rights.  If the Software is not accompanied by a license agreement and you do not otherwise have a written agreement with Cypress governing the use of the Software, then Cypress hereby grants you a personal, non-exclusive, nontransferable license (without the right to sublicense) (1) under its copyright rights in the Software (a) for Software provided in source code form, to modify and reproduce the Software solely for use with Cypress hardware products, only internally within your organization, and (b) to distribute the Software in binary code form externally to end users (either directly or indirectly through resellers and distributors), solely for use on Cypress hardware product units, and (2) under those claims of Cypress’s patents that are infringed by the Software (as provided by Cypress, unmodified) to make, use, distribute, and import the Software solely for use with Cypress hardware products.  Any other use, reproduction, modification, translation, or compilation of the Software is prohibited.
+© Cypress Semiconductor Corporation, 2023. This document is the property of Cypress Semiconductor Corporation, an Infineon Technologies company, and its affiliates ("Cypress").  This document, including any software or firmware included or referenced in this document ("Software"), is owned by Cypress under the intellectual property laws and treaties of the United States and other countries worldwide.  Cypress reserves all rights under such laws and treaties and does not, except as specifically stated in this paragraph, grant any license under its patents, copyrights, trademarks, or other intellectual property rights.  If the Software is not accompanied by a license agreement and you do not otherwise have a written agreement with Cypress governing the use of the Software, then Cypress hereby grants you a personal, non-exclusive, nontransferable license (without the right to sublicense) (1) under its copyright rights in the Software (a) for Software provided in source code form, to modify and reproduce the Software solely for use with Cypress hardware products, only internally within your organization, and (b) to distribute the Software in binary code form externally to end users (either directly or indirectly through resellers and distributors), solely for use on Cypress hardware product units, and (2) under those claims of Cypress’s patents that are infringed by the Software (as provided by Cypress, unmodified) to make, use, distribute, and import the Software solely for use with Cypress hardware products.  Any other use, reproduction, modification, translation, or compilation of the Software is prohibited.
 <br>
 TO THE EXTENT PERMITTED BY APPLICABLE LAW, CYPRESS MAKES NO WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, WITH REGARD TO THIS DOCUMENT OR ANY SOFTWARE OR ACCOMPANYING HARDWARE, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  No computing device can be absolutely secure.  Therefore, despite security measures implemented in Cypress hardware or software products, Cypress shall have no liability arising out of any security breach, such as unauthorized access to or use of a Cypress product. CYPRESS DOES NOT REPRESENT, WARRANT, OR GUARANTEE THAT CYPRESS PRODUCTS, OR SYSTEMS CREATED USING CYPRESS PRODUCTS, WILL BE FREE FROM CORRUPTION, ATTACK, VIRUSES, INTERFERENCE, HACKING, DATA LOSS OR THEFT, OR OTHER SECURITY INTRUSION (collectively, "Security Breach").  Cypress disclaims any liability relating to any Security Breach, and you shall and hereby do release Cypress from any claim, damage, or other liability arising from any Security Breach.  In addition, the products described in these materials may contain design defects or errors known as errata which may cause the product to deviate from published specifications. To the extent permitted by applicable law, Cypress reserves the right to make changes to this document without further notice. Cypress does not assume any liability arising out of the application or use of any product or circuit described in this document. Any information provided in this document, including any sample design information or programming code, is provided only for reference purposes.  It is the responsibility of the user of this document to properly design, program, and test the functionality and safety of any application made of this information and any resulting product.  "High-Risk Device" means any device or system whose failure could cause personal injury, death, or property damage.  Examples of High-Risk Devices are weapons, nuclear installations, surgical implants, and other medical devices.  "Critical Component" means any component of a High-Risk Device whose failure to perform can be reasonably expected to cause, directly or indirectly, the failure of the High-Risk Device, or to affect its safety or effectiveness.  Cypress is not liable, in whole or in part, and you shall and hereby do release Cypress from any claim, damage, or other liability arising from any use of a Cypress product as a Critical Component in a High-Risk Device. You shall indemnify and hold Cypress, including its affiliates, and its directors, officers, employees, agents, distributors, and assigns harmless from and against all claims, costs, damages, and expenses, arising out of any claim, including claims for product liability, personal injury or death, or property damage arising from any use of a Cypress product as a Critical Component in a High-Risk Device. Cypress products are not intended or authorized for use as a Critical Component in any High-Risk Device except to the limited extent that (i) Cypress’s published data sheet for the product explicitly states Cypress has qualified the product for use in a specific High-Risk Device, or (ii) Cypress has given you advance written authorization to use the product as a Critical Component in the specific High-Risk Device and you have signed a separate indemnification agreement.
 <br>
-Cypress, the Cypress logo, and combinations thereof, WICED, ModusToolbox, PSoC, CapSense, EZ-USB, F-RAM, and Traveo are trademarks or registered trademarks of Cypress or a subsidiary of Cypress in the United States or in other countries. For a more complete list of Cypress trademarks, visit cypress.com. Other names and brands may be claimed as property of their respective owners.
+Cypress, the Cypress logo, and combinations thereof, WICED, ModusToolbox, PSoC, CapSense, EZ-USB, F-RAM, and Traveo are trademarks or registered trademarks of Cypress or a subsidiary of Cypress in the United States or in other countries. For a more complete list of Cypress trademarks, visit www.infineon.com. Other names and brands may be claimed as property of their respective owners.
