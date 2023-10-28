@@ -48,7 +48,7 @@ TARGET=CY8CKIT-040T
 # 
 # If APPNAME is edited, ensure to update or regenerate launch 
 # configurations for your IDE.
-APPNAME=mtb-example-psoc4-msclp-mutual-capacitance-touchpad
+APPNAME=mtb-example-psoc4-msclp-csx-touchpad
 
 # Name of toolchain to use. Options include:
 #

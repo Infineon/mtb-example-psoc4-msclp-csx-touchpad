@@ -48,7 +48,7 @@
         <Property id="TOUCHPAD_MULTIPLIER" value="SNS_NUM_MINUS_1"/>
         <Property id="BLOCK_ANALOG_WAKEUP_DELAY_US" value="25"/>
         <Property id="PROX_TOUCH_COEFF" value="300"/>
-        <Property id="BIST_EN" value="false"/>
+        <Property id="BIST_EN" value="true"/>
         <Property id="BIST_WDGT_CRC_EN" value="true"/>
         <Property id="BIST_BSLN_DUPLICATION_EN" value="true"/>
         <Property id="BIST_BSLN_RAW_OUT_RANGE_EN" value="true"/>
@@ -136,7 +136,7 @@
                 <Property id="CIC_RATE" value="255"/>
                 <Property id="CIC_SHIFT" value="AUTO"/>
                 <Property id="ROW_CIC_SHIFT" value="AUTO"/>
-                <Property id="CDAC_REF0" value="17"/>
+                <Property id="CDAC_REF0" value="18"/>
                 <Property id="ROW_CDAC_REF0" value="0"/>
                 <Property id="CDAC_FINE0" value="32"/>
                 <Property id="ROW_CDAC_FINE0" value="32"/>
@@ -153,7 +153,7 @@
                 <Property id="NNOISE_TH" value="450"/>
                 <Property id="LOW_BSLN_RST" value="30"/>
                 <Property id="HYSTERESIS" value="107"/>
-                <Property id="ON_DEBOUNCE" value="10"/>
+                <Property id="ON_DEBOUNCE" value="1"/>
                 <Property id="VELOCITY" value="2500"/>
                 <Property id="IIR_FILTER" value="false"/>
                 <Property id="IIR_FILTER_COEFF" value="128"/>
@@ -179,25 +179,25 @@
                 <Property id="DIVISOR" value="4"/>
                 <Property id="SPEED_TH_X" value="3"/>
                 <Property id="SPEED_TH_Y" value="4"/>
-                <Property id="GESTURE_ENABLE" value="false"/>
+                <Property id="GESTURE_ENABLE" value="true"/>
                 <Property id="GESTURE_1F_SINGLE_CLICK_ENABLE" value="true"/>
                 <Property id="GESTURE_1F_DOUBLE_CLICK_ENABLE" value="true"/>
-                <Property id="GESTURE_1F_LONG_PRESS_ENABLE" value="true"/>
+                <Property id="GESTURE_1F_LONG_PRESS_ENABLE" value="false"/>
                 <Property id="GESTURE_1F_CLICK_DRAG_ENABLE" value="true"/>
-                <Property id="GESTURE_2F_SINGLE_CLICK_ENABLE" value="true"/>
-                <Property id="GESTURE_1F_SCROLL_ENABLE" value="true"/>
-                <Property id="GESTURE_2F_SCROLL_ENABLE" value="true"/>
-                <Property id="GESTURE_1F_EDGE_SWIPE_ENABLE" value="true"/>
+                <Property id="GESTURE_2F_SINGLE_CLICK_ENABLE" value="false"/>
+                <Property id="GESTURE_1F_SCROLL_ENABLE" value="false"/>
+                <Property id="GESTURE_2F_SCROLL_ENABLE" value="false"/>
+                <Property id="GESTURE_1F_EDGE_SWIPE_ENABLE" value="false"/>
                 <Property id="GESTURE_1F_FLICK_ENABLE" value="true"/>
-                <Property id="GESTURE_1F_ROTATE_ENABLE" value="true"/>
+                <Property id="GESTURE_1F_ROTATE_ENABLE" value="false"/>
                 <Property id="GESTURE_2F_ZOOM_ENABLE" value="true"/>
-                <Property id="GESTURE_FILTERING_ENABLE" value="false"/>
-                <Property id="CLICK_TIMEOUT_MAX" value="1000"/>
-                <Property id="CLICK_TIMEOUT_MIN" value="0"/>
-                <Property id="CLICK_DISTANCE_MAX" value="100"/>
-                <Property id="SECOND_CLICK_INTERVAL_MAX" value="1000"/>
-                <Property id="SECOND_CLICK_INTERVAL_MIN" value="0"/>
-                <Property id="SECOND_CLICK_DISTANCE_MAX" value="100"/>
+                <Property id="GESTURE_FILTERING_ENABLE" value="true"/>
+                <Property id="CLICK_TIMEOUT_MAX" value="200"/>
+                <Property id="CLICK_TIMEOUT_MIN" value="20"/>
+                <Property id="CLICK_DISTANCE_MAX" value="50"/>
+                <Property id="SECOND_CLICK_INTERVAL_MAX" value="200"/>
+                <Property id="SECOND_CLICK_INTERVAL_MIN" value="20"/>
+                <Property id="SECOND_CLICK_DISTANCE_MAX" value="50"/>
                 <Property id="LONG_PRESS_TIMEOUT_MIN" value="1000"/>
                 <Property id="LONG_PRESS_DISTANCE_MAX" value="100"/>
                 <Property id="SCROLL_DEBOUNCE" value="3"/>
@@ -205,9 +205,9 @@
                 <Property id="ROTATE_DEBOUNCE" value="10"/>
                 <Property id="ROTATE_DISTANCE_MIN" value="50"/>
                 <Property id="ZOOM_DEBOUNCE" value="3"/>
-                <Property id="ZOOM_DISTANCE_MIN" value="50"/>
-                <Property id="FLICK_TIMEOUT_MAX" value="300"/>
-                <Property id="FLICK_DISTANCE_MIN" value="100"/>
+                <Property id="ZOOM_DISTANCE_MIN" value="20"/>
+                <Property id="FLICK_TIMEOUT_MAX" value="200"/>
+                <Property id="FLICK_DISTANCE_MIN" value="50"/>
                 <Property id="EDGE_EDGE_SIZE" value="200"/>
                 <Property id="EDGE_DISTANCE_MIN" value="200"/>
                 <Property id="EDGE_TIMEOUT_MAX" value="2000"/>
@@ -220,7 +220,7 @@
             <Electrodes>
                 <Electrode id="Rx0" kind="Column">
                     <ElectrodeProperties>
-                        <Property id="CDAC0" value="103,97,97,93,105"/>
+                        <Property id="CDAC0" value="113,103,99,95,103"/>
                         <Property id="CDAC1" value="32,32,32,32,32"/>
                         <Property id="CDAC2" value="32,32,32,32,32"/>
                         <Property id="PINS" value="Dedicated pin"/>
@@ -228,7 +228,7 @@
                 </Electrode>
                 <Electrode id="Rx1" kind="Column">
                     <ElectrodeProperties>
-                        <Property id="CDAC0" value="93,89,93,89,97"/>
+                        <Property id="CDAC0" value="105,93,95,89,97"/>
                         <Property id="CDAC1" value="32,32,32,32,32"/>
                         <Property id="CDAC2" value="32,32,32,32,32"/>
                         <Property id="PINS" value="Dedicated pin"/>
@@ -236,7 +236,7 @@
                 </Electrode>
                 <Electrode id="Rx2" kind="Column">
                     <ElectrodeProperties>
-                        <Property id="CDAC0" value="83,81,85,81,89"/>
+                        <Property id="CDAC0" value="97,87,87,83,89"/>
                         <Property id="CDAC1" value="32,32,32,32,32"/>
                         <Property id="CDAC2" value="32,32,32,32,32"/>
                         <Property id="PINS" value="Dedicated pin"/>
@@ -244,7 +244,7 @@
                 </Electrode>
                 <Electrode id="Rx3" kind="Column">
                     <ElectrodeProperties>
-                        <Property id="CDAC0" value="75,73,77,75,81"/>
+                        <Property id="CDAC0" value="91,81,81,77,83"/>
                         <Property id="CDAC1" value="32,32,32,32,32"/>
                         <Property id="CDAC2" value="32,32,32,32,32"/>
                         <Property id="PINS" value="Dedicated pin"/>
