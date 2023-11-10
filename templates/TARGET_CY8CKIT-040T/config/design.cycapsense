@@ -48,7 +48,7 @@
         <Property id="TOUCHPAD_MULTIPLIER" value="SNS_NUM_MINUS_1"/>
         <Property id="BLOCK_ANALOG_WAKEUP_DELAY_US" value="25"/>
         <Property id="PROX_TOUCH_COEFF" value="300"/>
-        <Property id="BIST_EN" value="true"/>
+        <Property id="BIST_EN" value="false"/>
         <Property id="BIST_WDGT_CRC_EN" value="true"/>
         <Property id="BIST_BSLN_DUPLICATION_EN" value="true"/>
         <Property id="BIST_BSLN_RAW_OUT_RANGE_EN" value="true"/>
