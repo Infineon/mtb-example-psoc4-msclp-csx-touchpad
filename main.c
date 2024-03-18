@@ -1,15 +1,15 @@
 /******************************************************************************
-* File Name: main.c
-*
-* Description: This is the source code for the PSoC 4 MSCLP Multi-touch 
-* Mutual-Capacitance
-* Touchpad Tuning with Gesture detection code example for ModusToolbox.
-*
-* Related Document: See README.md
-*
-*******************************************************************************
-* $ Copyright 2021-2023 Cypress Semiconductor $
-*******************************************************************************/
+ * File Name: main.c
+ *
+ * Description: This is the source code for the PSoC 4 MSCLP Multi-touch
+ * Mutual-Capacitance
+ * Touchpad Tuning with Gesture detection code example for ModusToolbox.
+ *
+ * Related Document: See README.md
+ *
+ *******************************************************************************
+ * $ Copyright 2021-2023 Cypress Semiconductor $
+ *******************************************************************************/
 
 /*******************************************************************************
  * Include header files
@@ -23,14 +23,14 @@
 #include "SpiMaster.h"
 
 /*******************************************************************************
-* User Configurable Macro
-*******************************************************************************/
+ * User Configurable Macro
+ *******************************************************************************/
 #define TIMESTAMP_INTERVAL_IN_MILSEC                                (50u)
 #define LED_TIMEOUT_IN_MILSEC                                       (1000u)
 
 /*******************************************************************************
-* Fixed Macros
-*******************************************************************************/
+ * Fixed Macros
+ *******************************************************************************/
 #define CAPSENSE_MSC0_INTR_PRIORITY                                 (3u)
 #define CY_ASSERT_FAILED                                            (0u)
 
@@ -64,6 +64,9 @@
 
 #define MAX_COUNTER_VALUE                                           (0xFFFFFFFF)
 
+/* Double click wait timeout before confirming single click detection */
+#define DOUBLE_CLICK_TIMEOUT                                        (CY_CAPSENSE_TOUCHPAD_CLICK_TIMEOUT_MAX_VALUE + CY_CAPSENSE_TOUCHPAD_SECOND_CLICK_INTERVAL_MIN_VALUE)
+
 /* Define the conditions to check sensor status */
 #define SENSOR_ACTIVE                                               (1u)
 
@@ -72,8 +75,8 @@
 
 
 /*******************************************************************************
-* Global Variables
-*******************************************************************************/
+ * Global Variables
+ *******************************************************************************/
 
 cy_stc_scb_ezi2c_context_t ezi2c_context;
 stc_serial_led_context_t led_context;
@@ -82,11 +85,10 @@ uint32_t gestureHeldForLed;
 uint32_t led_delay;
 uint32_t clickIntervalTimer;
 uint8_t startDoubleClickTimer;
-uint32_t doubleClickTimeout;
 
 /*******************************************************************************
-* Function Prototypes
-*******************************************************************************/
+ * Function Prototypes
+ *******************************************************************************/
 static void initialize_capsense(void);
 
 static void capsense_msc0_isr(void);
@@ -96,35 +98,27 @@ static void initialize_capsense_tuner(void);
 
 void led_control(void);
 
-#if CY_CAPSENSE_BIST_EN
-static void measure_sensor_capacitance(uint32_t *sensor_capacitance);
-#endif
-
 static void init_sys_tick();
 void SysTickCallback(void);
 
 /*******************************************************************************
-* Function Name: main
-********************************************************************************
-* Summary:
-*  System entrance point. This function performs
-*  - initial setup of device
-*  - initialize CAPSENSE
-*  - initialize tuner communication
-*  - scan touch input continuously
-*  - serial RGB LED for touch indication
-*
-* Return:
-*  int
-*
-*******************************************************************************/
+ * Function Name: main
+ ********************************************************************************
+ * Summary:
+ *  System entrance point. This function performs
+ *  - initial setup of device
+ *  - initialize CAPSENSE
+ *  - initialize tuner communication
+ *  - scan touch input continuously
+ *  - serial RGB LED for touch indication
+ *
+ * Return:
+ *  int
+ *
+ *******************************************************************************/
 int main(void)
 {
     cy_rslt_t result ;
-   
-      #if CY_CAPSENSE_BIST_EN
-      uint32_t sensor_capacitance[CY_CAPSENSE_SENSOR_COUNT];
-      #endif
 
     /* Initialize the device and board peripherals */
     result = cybsp_init();
@@ -150,16 +144,8 @@ int main(void)
     /* Initializes the system tick */
     init_sys_tick();
 
-    #if CY_CAPSENSE_BIST_EN
-    /* Measure the self capacitance of sensor electrode using BIST */
-    measure_sensor_capacitance(sensor_capacitance);
-    #endif
-
     /* Start the first scan */
     Cy_CapSense_ScanAllSlots(&cy_capsense_context);
-
-    /* Double click wait timeout before confirming single click detection */
-    doubleClickTimeout = CY_CAPSENSE_TOUCHPAD_CLICK_TIMEOUT_MAX_VALUE + CY_CAPSENSE_TOUCHPAD_SECOND_CLICK_INTERVAL_MIN_VALUE;
 
     for (;;)
     {
@@ -170,7 +156,7 @@ int main(void)
 
             /*decode all the gestures*/
             gesture = Cy_CapSense_DecodeWidgetGestures(CY_CAPSENSE_TOUCHPAD_WDGT_ID, &cy_capsense_context);
-           
+
             /* Serial LED control for showing the CAPSENSE touch and gesture detected status (feedback) */
             led_control();
 
@@ -180,7 +166,7 @@ int main(void)
                 clickIntervalTimer = 0u;
                 startDoubleClickTimer = 1u;
             }
-            else if((clickIntervalTimer > doubleClickTimeout)&&(startDoubleClickTimer))
+            else if((clickIntervalTimer > DOUBLE_CLICK_TIMEOUT)&&(startDoubleClickTimer))
             {
                 clickIntervalTimer = 0u;
                 startDoubleClickTimer = 0u;
@@ -219,13 +205,13 @@ int main(void)
 
 
 /*******************************************************************************
-* Function Name: initialize_capsense
-********************************************************************************
-* Summary:
-*  This function initializes the CAPSENSE blocks and configures the CAPSENSE
-*  interrupt.
-*
-*******************************************************************************/
+ * Function Name: initialize_capsense
+ ********************************************************************************
+ * Summary:
+ *  This function initializes the CAPSENSE blocks and configures the CAPSENSE
+ *  interrupt.
+ *
+ *******************************************************************************/
 static void initialize_capsense(void)
 {
     cy_capsense_status_t status = CY_CAPSENSE_STATUS_SUCCESS;
@@ -233,8 +219,8 @@ static void initialize_capsense(void)
     /* CAPSENSE interrupt configuration MSCLP 0 */
     const cy_stc_sysint_t capsense_msc0_interrupt_config =
     {
-        .intrSrc = CY_MSCLP0_LP_IRQ,
-        .intrPriority = CAPSENSE_MSC0_INTR_PRIORITY,
+            .intrSrc = CY_MSCLP0_LP_IRQ,
+            .intrPriority = CAPSENSE_MSC0_INTR_PRIORITY,
     };
 
     /* Capture the MSC HW block and initialize it to the default state. */
@@ -246,7 +232,7 @@ static void initialize_capsense(void)
         Cy_SysInt_Init(&capsense_msc0_interrupt_config, capsense_msc0_isr);
         NVIC_ClearPendingIRQ(capsense_msc0_interrupt_config.intrSrc);
         NVIC_EnableIRQ(capsense_msc0_interrupt_config.intrSrc);
-        
+
 
         /* Initialize the CAPSENSE firmware modules. */
         status = Cy_CapSense_Enable(&cy_capsense_context);
@@ -261,12 +247,12 @@ static void initialize_capsense(void)
 }
 
 /*******************************************************************************
-* Function Name: capsense_msc0_isr
-********************************************************************************
-* Summary:
-*  Wrapper function for handling interrupts from CAPSENSE MSC0 block.
-*
-*******************************************************************************/
+ * Function Name: capsense_msc0_isr
+ ********************************************************************************
+ * Summary:
+ *  Wrapper function for handling interrupts from CAPSENSE MSC0 block.
+ *
+ *******************************************************************************/
 static void capsense_msc0_isr(void)
 {
     Cy_CapSense_InterruptHandler(CY_MSCLP0_HW, &cy_capsense_context);
@@ -274,12 +260,12 @@ static void capsense_msc0_isr(void)
 
 
 /*******************************************************************************
-* Function Name: initialize_capsense_tuner
-********************************************************************************
-* Summary:
-* EZI2C module to communicate with the CAPSENSE Tuner tool.
-*
-*******************************************************************************/
+ * Function Name: initialize_capsense_tuner
+ ********************************************************************************
+ * Summary:
+ * EZI2C module to communicate with the CAPSENSE Tuner tool.
+ *
+ *******************************************************************************/
 static void initialize_capsense_tuner(void)
 {
     cy_en_scb_ezi2c_status_t status = CY_SCB_EZI2C_SUCCESS;
@@ -287,8 +273,8 @@ static void initialize_capsense_tuner(void)
     /* EZI2C interrupt configuration structure */
     const cy_stc_sysint_t ezi2c_intr_config =
     {
-        .intrSrc = CYBSP_EZI2C_IRQ,
-        .intrPriority = EZI2C_INTR_PRIORITY,
+            .intrSrc = CYBSP_EZI2C_IRQ,
+            .intrPriority = EZI2C_INTR_PRIORITY,
     };
 
     /* Initialize the EZI2C firmware module */
@@ -307,53 +293,51 @@ static void initialize_capsense_tuner(void)
      * the Tuner or the Bridge Control Panel can read this buffer but you can
      * connect only one tool at a time. */
     Cy_SCB_EZI2C_SetBuffer1(CYBSP_EZI2C_HW, (uint8_t *)&cy_capsense_tuner,
-                            sizeof(cy_capsense_tuner), sizeof(cy_capsense_tuner),
-                            &ezi2c_context);
+            sizeof(cy_capsense_tuner), sizeof(cy_capsense_tuner),
+            &ezi2c_context);
 
     Cy_SCB_EZI2C_Enable(CYBSP_EZI2C_HW);
 }
 
 /*******************************************************************************
-* Function Name: ezi2c_isr
-********************************************************************************
-* Summary:
-* Wrapper function for handling interrupts from EZI2C block.
-*
-*******************************************************************************/
+ * Function Name: ezi2c_isr
+ ********************************************************************************
+ * Summary:
+ * Wrapper function for handling interrupts from EZI2C block.
+ *
+ *******************************************************************************/
 static void ezi2c_isr(void)
 {
     Cy_SCB_EZI2C_Interrupt(CYBSP_EZI2C_HW, &ezi2c_context);
 }
 
 /*******************************************************************************
-* Function Name: led_control
-********************************************************************************
-* Summary:
-* Logic to control the on / off status, color and brightness of LED1 and LED3  
-* as per the finger position reported by the CAPSENSE touchpad widget.
-*
-* Parameters:
-* structure of different CAPSENSE application states
-*
-* Return:
-*  void
-*******************************************************************************/
+ * Function Name: led_control
+ ********************************************************************************
+ * Summary:
+ * Logic to control the on / off status, color and brightness of LED1 and LED3
+ * as per the finger position reported by the CAPSENSE touchpad widget.
+ *
+ * Parameters:
+ * structure of different CAPSENSE application states
+ *
+ * Return:
+ *  void
+ *******************************************************************************/
 void led_control(void)
 {
     /* Brightness of each LED is represented by 0 to 255, where 0 indicates 
      * OFF state and 255 indicates maximum brightness of an LED */
-     uint8_t brightness_max = 255u;
-     uint8_t brightness_half = 28u;
+    uint8_t brightness_max = 255u;
+    uint8_t brightness_half = 28u;
 
     uint8_t touchposition_x, touchposition_y ;
-    cy_stc_capsense_touch_t *panelTouch = Cy_CapSense_GetTouchInfo(CY_CAPSENSE_TOUCHPAD_WDGT_ID, &cy_capsense_context);
+    cy_stc_capsense_touch_t *panelTouch = NULL;
 
-    touchposition_x = brightness_max - panelTouch->ptrPosition->x;
-    touchposition_y = panelTouch->ptrPosition->y;
 
     /*******************************************************************************
-    * If there is no touch or gesture detected ,LEDs are off
-    * ******************************************************************************/
+     * If there is no touch or gesture detected ,LEDs are off
+     * ******************************************************************************/
 
     led_context.led_num[LED1].color_red = 0;
     led_context.led_num[LED1].color_green = 0;
@@ -370,120 +354,102 @@ void led_control(void)
     switch(gestureHeldForLed)
     {
         case ONE_FNGR_SINGLE_CLICK_GESTURE:
-         /* If one finger single click gesture is performed, LED2 will glow RED */
+            /* If one finger single click gesture is performed, LED2 will glow RED */
             led_context.led_num[LED2].color_red = brightness_max;
             break;
 
         case ONE_FNGR_DOUBLE_CLICK_GESTURE:
-        /* If one finger double click gesture is performed, LED2 will glow BLUE */
+            /* If one finger double click gesture is performed, LED2 will glow BLUE */
             led_context.led_num[LED2].color_blue = brightness_max;
             break;
 
-         case CY_CAPSENSE_GESTURE_ONE_FNGR_CLICK_DRAG_MASK:
-        /* If one finger click drag gesture is performed, LED2 will glow YELLOW */
+        case CY_CAPSENSE_GESTURE_ONE_FNGR_CLICK_DRAG_MASK:
+            /* If one finger click drag gesture is performed, LED2 will glow YELLOW */
             led_context.led_num[LED2].color_red = brightness_max;
             led_context.led_num[LED2].color_green = brightness_max;
             break;
 
         case Zoom_in :
         case Zoom_out:
-         /* If Zoom gesture is performed, LED2 will glow MAGENTA */
+            /* If Zoom gesture is performed, LED2 will glow MAGENTA */
             led_context.led_num[LED2].color_red = brightness_max;
             led_context.led_num[LED2].color_blue = brightness_max;
             break;
 
         case FLICK_GESTURE_DOWN:
-        /* If Down flick gesture is performed, LED2 will glow WHITE */
+            /* If Down flick gesture is performed, LED2 will glow WHITE */
             led_context.led_num[LED2].color_green = brightness_max;
             led_context.led_num[LED2].color_red = brightness_max;
             led_context.led_num[LED2].color_blue = brightness_max;
             break;
 
         case FLICK_GESTURE_UP:
-        /* If Down flick gesture is performed, LED2 will glow CYAN */
+            /* If Down flick gesture is performed, LED2 will glow CYAN */
             led_context.led_num[LED2].color_blue = brightness_max;
             led_context.led_num[LED2].color_green = brightness_max;
             break;
 
         case FLICK_GESTURE_LEFT:
-        /* If Down flick gesture is performed, LED2 will glow ROSE */
+            /* If Down flick gesture is performed, LED2 will glow ROSE */
             led_context.led_num[LED2].color_blue = brightness_half;
             led_context.led_num[LED2].color_red = brightness_max;
             break;
 
         case FLICK_GESTURE_RIGHT:
-        /* If Down flick gesture is performed, LED2 will glow ORANGE */
+            /* If Down flick gesture is performed, LED2 will glow ORANGE */
             led_context.led_num[LED2].color_green = brightness_half;
             led_context.led_num[LED2].color_red = brightness_max;
             break;
-            
+
         case FLICK_GESTURE_UP_RIGHT:
         case FLICK_GESTURE_DOWN_LEFT:
         case FLICK_GESTURE_DOWN_RIGHT:
         case FLICK_GESTURE_UP_LEFT:
-        /* If diagonal Flick gesture is performed, LED2 will glow GREEN */
+            /* If diagonal Flick gesture is performed, LED2 will glow GREEN */
             led_context.led_num[LED2].color_green = brightness_max;
             break;
 
         default:
-        /* If the CSX Touchpad is active, touch status is indicated by LED1 and LED3 */
-                 if (SENSOR_ACTIVE == Cy_CapSense_IsWidgetActive(CY_CAPSENSE_TOUCHPAD_WDGT_ID, &cy_capsense_context))
-                 {
-                    led_context.led_num[LED1].color_green = touchposition_x;
-                    led_context.led_num[LED3].color_green = touchposition_y;
-                 }
-                break;
-        }
+            /* If the CSX Touchpad is active, touch status is indicated by LED1 and LED3 */
+            if (SENSOR_ACTIVE == Cy_CapSense_IsWidgetActive(CY_CAPSENSE_TOUCHPAD_WDGT_ID, &cy_capsense_context))
+            {
+
+                panelTouch = Cy_CapSense_GetTouchInfo(CY_CAPSENSE_TOUCHPAD_WDGT_ID, &cy_capsense_context);
+
+                touchposition_x = brightness_max - panelTouch->ptrPosition->x;
+                touchposition_y = panelTouch->ptrPosition->y;
+
+                led_context.led_num[LED1].color_green = touchposition_x;
+                led_context.led_num[LED3].color_green = touchposition_y;
+            }
+            break;
+    }
     serial_led_control(&led_context);
 }
 
-#if CY_CAPSENSE_BIST_EN
 /*******************************************************************************
-* Function Name: measure_sensor_capacitance
-********************************************************************************
-* Summary:
-*  Measures the self capacitance of the sensor electrode (Cp) in Femto Farad and stores its value in the variable sensor_capacitance 
+ * Function Name: init_sys_tick
+ ********************************************************************************
+ * Summary:
+ *  initializes the system tick with highest possible value to start counting down.
+ *  specifying the timestamp increment value
+ *******************************************************************************/
 
-*******************************************************************************/
-static void measure_sensor_capacitance(uint32_t *sensor_capacitance)
+static void init_sys_tick()
 {
-    /* For BIST configuration Connecting all Inactive sensor connections (ISC) of CSX sensors to to ground*/
-    Cy_CapSense_SetInactiveElectrodeState(CY_CAPSENSE_SNS_CONNECTION_GROUND,
-                                                  CY_CAPSENSE_BIST_CSX_GROUP, &cy_capsense_context);
-
-    /*Runs the BIST to measure the sensor capacitance*/
-    Cy_CapSense_RunSelfTest(CY_CAPSENSE_BIST_SNS_CAP_MASK,
-                &cy_capsense_context);
-        memcpy(sensor_capacitance,
-                cy_capsense_context.ptrWdConfig->ptrSnsCapacitance,
-                CY_CAPSENSE_SENSOR_COUNT * sizeof(uint32_t));
-
-}
-#endif
-
-/*******************************************************************************
-* Function Name: init_sys_tick
-********************************************************************************
-* Summary:
-*  initializes the system tick with highest possible value to start counting down.
-*  specifying the timestamp increment value
-*******************************************************************************/
-
- static void init_sys_tick()
- {
     Cy_SysTick_Init (CY_SYSTICK_CLOCK_SOURCE_CLK_LF,SYS_TICK_INTERVAL);
     cy_capsense_context.ptrCommonContext->timestampInterval = TIMESTAMP_INTERVAL_IN_MILSEC;
     Cy_SysTick_SetCallback(0u,SysTickCallback);
- }
+}
 
 
 /*******************************************************************************
-* Function Name: SysTickCallback
-********************************************************************************
-* Summary:
-* Wrapper function for incrementing gesture timestamp and handling LED on time  
-*
-*******************************************************************************/
+ * Function Name: SysTickCallback
+ ********************************************************************************
+ * Summary:
+ * Wrapper function for incrementing gesture timestamp and handling LED on time
+ *
+ *******************************************************************************/
 
 void SysTickCallback(void)
 {
@@ -493,7 +459,7 @@ void SysTickCallback(void)
     {
         led_delay += TIMESTAMP_INTERVAL_IN_MILSEC;
     }
-    
+
     if(((clickIntervalTimer + TIMESTAMP_INTERVAL_IN_MILSEC) < MAX_COUNTER_VALUE)&&(startDoubleClickTimer))
     {
         clickIntervalTimer += TIMESTAMP_INTERVAL_IN_MILSEC;
